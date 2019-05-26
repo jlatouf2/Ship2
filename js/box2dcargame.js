@@ -1,21 +1,19 @@
-'use strict';
-(function(){
+'ust strict';
 
-	// Box2D alias
-	var b2Vec2 = Box2D.Common.Math.b2Vec2
-	, b2AABB = Box2D.Collision.b2AABB
-	, b2BodyDef = Box2D.Dynamics.b2BodyDef
-	, b2Body = Box2D.Dynamics.b2Body
-	, b2FixtureDef = Box2D.Dynamics.b2FixtureDef
-	, b2Fixture = Box2D.Dynamics.b2Fixture
-	, b2World = Box2D.Dynamics.b2World
-	, b2MassData = Box2D.Collision.Shapes.b2MassData
-	, b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape
-	, b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
-	, b2DebugDraw = Box2D.Dynamics.b2DebugDraw
-	, b2MouseJointDef = Box2D.Dynamics.Joints.b2MouseJointDef
-	, b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef
-	;
+(function(){ // Box2D alias
+	var b2Vec2 = Box2D.Common.Math.b2Vec2,
+	 b2AABB = Box2D.Collision.b2AABB ,
+	 b2BodyDef = Box2D.Dynamics.b2BodyDef ,
+	 b2Body = Box2D.Dynamics.b2Body ,
+	 b2FixtureDef = Box2D.Dynamics.b2FixtureDef ,
+	 b2Fixture = Box2D.Dynamics.b2Fixture ,
+	 b2World = Box2D.Dynamics.b2World ,
+	 b2MassData = Box2D.Collision.Shapes.b2MassData ,
+	  b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape ,
+		b2CircleShape = Box2D.Collision.Shapes.b2CircleShape ,
+		 b2DebugDraw = Box2D.Dynamics.b2DebugDraw ,
+		 b2MouseJointDef = Box2D.Dynamics.Joints.b2MouseJointDef ,
+		 b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef ;
 
 
 
@@ -90,6 +88,19 @@
 			directionY: 1
 
 		},
+
+		circle1: {
+			speed: 5,
+			x: 130,
+			y: 50,
+			width: 40,
+			height: 40,
+			directionX: 1,
+			directionY: 1
+			//Getters
+
+		},
+
 
 		game: {
 	offsetTop: $("#game").offset().top,
@@ -243,14 +254,8 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 			console.log(carGame[blue].left());
 
-
-
-
-
  //	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
-
-
-	};
+ 	};
 
 
 
@@ -260,14 +265,14 @@ function checkxvalue () {
 
 	function hitTestPoint(pointX, pointY)
 	   {
-			 var blue =localStorage.getItem("savedItem");
-	 			var blue2 = carGame[blue];
-			//	console.log(blue2.left());
+
+	//console.log(carGame.football.left());
+
 	     var hit = false;
-	     if(pointX > blue2.left()
-	     && pointX < blue2.right()
-	     && pointY > blue2.top()
-	     && pointY < blue2.bottom())
+	     if(pointX > carGame.football.left()
+	     && pointX < carGame.football.right()
+	     && pointY > carGame.football.top()
+	     && pointY < carGame.football.bottom())
 
 			 { 	hit = true;	}
 
@@ -275,6 +280,61 @@ function checkxvalue () {
 }
 
 
+
+var blue =localStorage.getItem("savedItem");
+ var blue2 = carGame[blue];
+
+  //	console.log(blue2.left());
+/************************NOTE*****************************
+YOU HAVE TO ADD THE CIRCLES OF THE OBJECTS YOU ARE TESTING
+TO MAKE HITTESTCIRCLE WORK!!!!!!
+*********************************************************/
+function hitTestCircle( c1 = carGame.circle2, c2 = carGame.circle3)
+   {
+		// 	console.log(c1);
+	//	console.log(c2);
+		//	console.log("C2"+c2.centerX());
+
+     //Calculate the vector between the circles' center points
+     var vx = c1.centerX() - c2.centerX();
+     var vy = c1.centerY() - c2.centerY();
+		//Find the distance between the circles by calculating //the vector's magnitude (how long the vector is)
+		var magnitude = Math.sqrt(vx * vx + vy * vy);
+     //Add together the circles' total radii
+     var totalRadii = c1.halfWidth() + c2.halfWidth();
+		//Set hit to true if the distance between the circles is //less than their totalRadii
+		var hit = magnitude < totalRadii;
+		return hit;
+	}
+
+
+function hitTestRectangle(r1, r2)
+{
+  //A variable to determine whether there's a collision
+  var hit = false;
+  //Calculate the distance vector
+  var vx = r1.centerX() - r2.centerX();
+  var vy = r1.centerY() - r2.centerY();
+  //Figure out the combined half-widths and half-heights
+  var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
+  var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
+  //Check for a collision on the X axis
+  if(Math.abs(vx) < combinedHalfWidths)
+  {
+    //A collision might be occurring. Check for a collision on the Y axis
+    if(Math.abs(vy) < combinedHalfHeights)
+    {
+      //There's definitely a collision happening
+			hit = true;
+		} else {
+			      //There's no collision on the Y axis
+			hit = false;
+		}
+	} else {
+    //There's no collision on the X axis
+		hit = false; }
+		return hit;
+}
 
 	function handleGameState(){
 		// set the game state as "starting screen"
@@ -399,43 +459,16 @@ function addImage() {
 			var enemy = carGame.enemy;
  			enemy.x += enemy.speed * enemy.directionX;
 */
-/*
-			if (count1 !== 0) {
-				//	console.log(count1);
-					for (var i = 0; i < count1; i++) {
-						var blue =localStorage.getItem("savedItem");
-					 	var blue2 = carGame[blue];
-					 	blue2.x += blue2.speed * blue2.directionX;
+ 	/*	    $("#paddleA").css({
+		      "left" : paddleA.x + paddleA.speed * paddleA.directionX,
+		      "top" : paddleA.y + paddleA.speed * paddleA.directionY
+		    });
 
-					 	 var red = "#" + blue;
-
-					 	$(red).css({
-					 		"left" : blue2.x + blue2.speed * blue2.directionX,
-					 		"top" : blue2.y + blue2.speed * blue2.directionY
-					 	});
-					}
-
-			}
-
-*/
-		/*	var paddleA = carGame.paddleA;
-			var paddleB = carGame.paddleB;
-			var paddleC = carGame.paddleC;
-			var missle = carGame.missle;
-			var missle2 = carGame.missle2;
-			var enemy = carGame.enemy;
-	 //	     var blue2 = carGame[blue];
-*/
-/*	    $("#paddleA").css({
-	      "left" : paddleA.x + paddleA.speed * paddleA.directionX,
-	      "top" : paddleA.y + paddleA.speed * paddleA.directionY
-	    });
-
-			$("#paddleB").css({
-				"left" : paddleB.x + paddleB.speed * paddleB.directionX,
-				"top" : paddleB.y + paddleB.speed * paddleB.directionY
-			});
-*/
+				$("#paddleB").css({
+					"left" : paddleB.x + paddleB.speed * paddleB.directionX,
+					"top" : paddleB.y + paddleB.speed * paddleB.directionY
+				});
+	*/
 			$("#paddleC").css({
 				"left" : paddleC.x + paddleC.speed * paddleC.directionX,
 				"top" : paddleC.y + paddleC.speed * paddleC.directionY
@@ -451,16 +484,16 @@ function addImage() {
 				"top" : football.y + football.speed * football.directionY
 			});
 
-/*			$("#enemy").css({
-				"left" : enemy.x + enemy.speed * enemy.directionX,
-				"top" : enemy.y + enemy.speed * enemy.directionY
-			});
+		/*			$("#enemy").css({
+						"left" : enemy.x + enemy.speed * enemy.directionX,
+						"top" : enemy.y + enemy.speed * enemy.directionY
+					});
 
-			$(".missle2").css({
-				"left" : missle2.x + missle2.speed * missle2.directionX,
-				"top" : missle2.y + missle2.speed * missle2.directionY
-			});
-*/
+					$(".missle2").css({
+						"left" : missle2.x + missle2.speed * missle2.directionX,
+						"top" : missle2.y + missle2.speed * missle2.directionY
+					});
+		*/
 
 
 
@@ -478,13 +511,24 @@ function addImage() {
 			//if(hitTestPoint(101, 11))
 
 			{
-						// message = "Collision!";
-						console.log("Collision!");
+					//	 message = "Collision!";
+					console.log("Collision!");
 					 }
 			else {
 					 //  message = "No Collision...";
 				//	 console.log("No Collision!");
 					 }
+
+
+			 	 if(hitTestCircle(carGame.circle2, carGame.circle3))
+					    {
+					     // message = "Collision!";
+						 	//console.log("Circle Collision!");
+					    }
+					 else {
+					    //  message = "No collision...";
+									 console.log("No Collision!");
+					    }
 
 
   }
@@ -514,6 +558,7 @@ function addImage() {
 										height: height,
 										directionX: dirx,
 										directionY: diry,
+										//Point properties
 										left: function()
 									  {
 									    return this.x;
@@ -529,11 +574,33 @@ function addImage() {
 										bottom: function()
 										{
 											return this.y + this.height;
+										},
+										//Circle Properties
+										centerX: function()
+										{
+											return this.x + (this.width / 2);
+										},
+										centerY: function()
+										{
+											return this.y + (this.height / 2);
+										},
+										halfWidth: function()
+										{
+											return this.width / 2;
+										},
+										halfHeight: function()
+										{
+											return this.height / 2;
 										}
+
 
  								   };
 				//moveShip
 		     var blue2 = carGame[blue];
+				 console.log(blue2);
+				 console.log(blue2.left());
+				 console.log(carGame.football.left());
+
 			//	 console.log(blue2);
 
 			//	localStorage.setItem("savedItem2", blue2);
@@ -570,7 +637,15 @@ function addImage() {
 
  	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
 
+	gameItem('circle2', 5, 100, 10, 100, 80, 1, 1, "url('../images/circle1.png')");
+
+	gameItem('circle3', 5, 50, 50, 100, 80, 1, 1, "url('../images/circle2.png')");
+
+
 	console.log(carGame);
+
+	console.log(carGame.circle2);
+	console.log(carGame.circle3);
 
 	//carGame["property"] = {x: 'value', y: 'blue'};
 
@@ -597,7 +672,7 @@ function addImage() {
 		carGame.missle.x = carGame.paddleC.x;
 		carGame.missle.y = carGame.paddleC.y + 70;
 
-		carGame.football.x = 200;
+		carGame.football.x = 300;
 		carGame.football.y = 10;
 
 //console.log(carGame.football);
