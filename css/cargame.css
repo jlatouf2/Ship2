@@ -125,6 +125,22 @@ transform: rotate(90deg);
 background-image: url(../images/ship.png);
 }
 
+#monster {
+/*  margin-top: 60px;   */
+width:64px;
+height:64px;
+position: absolute;
+left: 100px;
+top: 240px;
+x:50%;
+y:50%;
+background-image: url('../images/collisionTileSheet.png');
+background-repeat:no-repeat;
+/*THIS IS USED FOR TILESHEET POSITION! */
+background-position:0% 50%;
+
+ }
+
 #football {
 /*  margin-top: 60px;   */
 
@@ -137,6 +153,60 @@ height:100px;
 background-size: contain;
  position: absolute;
  }
+
+ #cat {
+ /*  margin-top: 60px;   */
+
+ left: 380px;
+ top: 240px;
+
+  width:80px;
+ height:80px;
+
+ background-size: contain;
+  position: absolute;
+  }
+
+  #textStuff {
+  /*  margin-top: 60px;   */
+
+  left: 10px;
+  top: 10px;
+
+   font-size:20px;
+
+  height:80px;
+
+  background-size: contain;
+   position: absolute;
+   }
+
+  #box {
+  /*  margin-top: 60px;   */
+
+  left: 380px;
+  top: 140px;
+
+   width:80px;
+  height:80px;
+
+  background-size: contain;
+   position: absolute;
+   }
+
+   #box1 {
+   /*  margin-top: 60px;   */
+
+   left: 80px;
+   top: 440px;
+
+    width:480px;
+   height:80px;
+
+   background-size: contain;
+    position: absolute;
+    }
+
 
 #ship22 {
 /*  margin-top: 60px;   */
