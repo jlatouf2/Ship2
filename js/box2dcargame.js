@@ -155,6 +155,8 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	var shouldDrawDebug = false;
 	var gameloop;
 	var count1 = 0;
+	var gravity1 = 0;
+  var isOnGround = undefined;
 
 	function initGame() {
 
@@ -218,6 +220,7 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
  //	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
  	};
 
+	/********************(****** MOVEMENT FCNS ****)*****************************/
 
   function moveCharacter(){
  	$(document).keydown(function(e){
@@ -231,7 +234,7 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 			// carGame.circle2.y += carGame.circle2.speed * carGame.circle2.directionY;
 
 		//	carGame.cat.directionY = -1;
-		//	 carGame.cat.y += carGame.cat.speed * carGame.cat.directionY;
+		// carGame.cat.y += carGame.cat.speed * carGame.cat.directionY;
 
  				return false;
 				break;
@@ -242,6 +245,9 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 		//	 carGame.circle2.directionY = 1;
 		//	 carGame.circle2.y += carGame.circle2.speed * carGame.circle2.directionY;
+
+	//	carGame.cat.directionY = 1;
+	 //carGame.cat.y += carGame.cat.speed * carGame.cat.directionY;
 
 		carGame.cat.directionX = 0;
 
@@ -277,12 +283,42 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 				break;
 
 			case 32: // SPACEBAR
-		//	fireMissile();
-			//carGame.cat.directionX = -1;
-			carGame.cat.x += 100 * carGame.cat.directionX;
-		//	carGame.cat.accelerationX
-		  carGame.cat.directionY = -1;
-	   carGame.cat.y += 100 * carGame.cat.directionY;
+
+//			if(showSide === "bottom" && carGame.cat.speed * carGame.cat.directionX >= 0)
+   //TO HALF JUMP: COUNT NUMBER OF TIMES THAT SPACEBAR IS HELD DOWN:
+	 //IF LESS THAN CERTAIN AMOUNT CHANGE THE SETTIMEOUT TO NORMAL
+
+			if(showSide === "bottom"  )
+				{
+
+ 					//	 isOnGround = true;
+ 					//	gravity1 = carGame.cat.speed * carGame.cat.directionX ;
+					//	gravity1 = -(gravity1);
+			/*		var cat = carGame.cat;
+					cat.accelerationY = 10;
+					cat.y += cat.gravity * cat.accelerationY;
+*/
+					showSide = blockRectangle(carGame.cat, carGame.box1);
+					console.log(showSide);
+					console.log(carGame.cat);
+ 					//THIS WILL ALLOW OBJECT TO JUMP CORRECTLY
+					carGame.cat.gravity = -0.7;
+ 					//	fireMissile();
+					//carGame.cat.directionX = -1;
+				//	carGame.cat.x += 50 * carGame.cat.directionX;
+					//	carGame.cat.accelerationX
+					carGame.cat.directionY = -1;
+
+					//THIS WILL ALLOW OBJECT TO JUMP EASILY
+				// carGame.cat.y += 200 * carGame.cat.directionY;
+				 carGame.cat.y -= carGame.cat.gravity * carGame.cat.accelerationY * carGame.cat.directionY;
+				 console.log(carGame.cat.y);
+		 setTimeout(setGravityback  , 500);
+
+			//
+				}
+
+
 
  			return false;
 				break;
@@ -290,6 +326,56 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 		}
 	});
   }
+
+	function setGravityback() {
+		carGame.cat.gravity = 0.7
+	}
+
+	function fireMissile()
+ {
+
+  	//cargame missle hide
+ 	console.log(carGame.paddleC.x);
+ 	console.log(carGame.paddleC.y);
+
+ 	var x = document.createElement("IMG");
+
+ 	// var img = document.getElementById('tetris_image')
+ 	x.classList.add('missle');
+ 	x.setAttribute("src", "../images/Missle.png");
+ 	x.setAttribute("width", "50");
+ 	x.setAttribute("height", "50");
+  //	 x.classList.add('yourCssClass')
+ 	x.style.left =  carGame.paddleC.x + 'px';
+ 	x.style.top =  carGame.paddleC.y +'px';
+
+  // x.style.x = '100px';
+ 	 x.style.position = "absolute";
+
+
+ 	x.setAttribute("alt", "The Pulpit Rock");
+ 	document.body.appendChild(x);
+
+ 	//carGame.missle.directionX = 1;
+ 	//carGame.missle.x += carGame.missle.speed * carGame.missle.directionX;
+ 	//carGame.missle.timer = setInterval(gameloop, 1000/30);
+ 	moveMissle();
+
+
+ };
+
+  function moveMissle(){
+
+  //REFER TO RESETBALL TO CHANGE X AND Y POSITION OF ROCKET.
+ //	carGame.missle.x = carGame.paddleC.x + 'px';
+ 	carGame.missle.directionX = 1;
+ 	carGame.missle.x += carGame.missle.speed * carGame.missle.directionX;
+
+ 	//carGame.missle2.directionX = 1;
+ //	carGame.missle2.x += carGame.missle2.speed * carGame.missle2.directionX;
+
+ };
+
 
 
   function hitTestPoint(pointX, pointY)
@@ -311,11 +397,8 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 //var blue =localStorage.getItem("savedItem");
  //var blue2 = carGame[blue];
 
-  //	console.log(blue2.left());
-/************************NOTE*****************************
-YOU HAVE TO ADD THE CIRCLES OF THE OBJECTS YOU ARE TESTING
-TO MAKE HITTESTCIRCLE WORK!!!!!!
-*********************************************************/
+ /******************(******** COLLISION FUNCTIONS ***)*************************/
+
   function hitTestCircle( c1 = carGame.circle2, c2 = carGame.circle3)
    {
 
@@ -358,116 +441,116 @@ TO MAKE HITTESTCIRCLE WORK!!!!!!
 		}
 	}
 
-  function hitTestRectangle(r1 = carGame.cat, r2 = carGame.box1)
-{
-  //A variable to determine whether there's a collision
-  var hit = false;
-  //Calculate the distance vector
-  var vx = r1.centerX() - r2.centerX();
-  var vy = r1.centerY() - r2.centerY();
-  //Figure out the combined half-widths and half-heights
-  var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
-  var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
-  //Check for a collision on the X axis
-  if(Math.abs(vx) < combinedHalfWidths)
-  {
-    //A collision might be occurring. Check for a collision on the Y axis
-    if(Math.abs(vy) < combinedHalfHeights)
-    {
-      //There's definitely a collision happening
-			hit = true;
+	  function hitTestRectangle(r1 = carGame.cat, r2 = carGame.box1)
+	{
+	  //A variable to determine whether there's a collision
+	  var hit = false;
+	  //Calculate the distance vector
+	  var vx = r1.centerX() - r2.centerX();
+	  var vy = r1.centerY() - r2.centerY();
+	  //Figure out the combined half-widths and half-heights
+	  var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
+	  var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
+	  //Check for a collision on the X axis
+	  if(Math.abs(vx) < combinedHalfWidths)
+	  {
+	    //A collision might be occurring. Check for a collision on the Y axis
+	    if(Math.abs(vy) < combinedHalfHeights)
+	    {
+	      //There's definitely a collision happening
+				hit = true;
+			} else {
+				      //There's no collision on the Y axis
+				hit = false;
+			}
 		} else {
-			      //There's no collision on the Y axis
-			hit = false;
-		}
-	} else {
-    //There's no collision on the X axis
-		hit = false; }
-		return hit;
-}
+	    //There's no collision on the X axis
+			hit = false; }
+			return hit;
+	}
 
-function blockRectangle(r1 = carGame.cat, r2 = carGame.box1)
-{
-  //A variable to tell us which side the collision is occurring on
-  var collisionSide = "";
+	function blockRectangle(r1 = carGame.cat, r2 = carGame.box1)
+	{
+	  //A variable to tell us which side the collision is occurring on
+	  var collisionSide = "";
 
-  //Calculate the distance vector
-  var vx = r1.centerX() - r2.centerX();
-  var vy = r1.centerY() - r2.centerY();
+	  //Calculate the distance vector
+	  var vx = r1.centerX() - r2.centerX();
+	  var vy = r1.centerY() - r2.centerY();
 
-  //Figure out the combined half-widths and half-heights
-  var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
-  var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
+	  //Figure out the combined half-widths and half-heights
+	  var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
+	  var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
 
-  //Check whether vx is less than the combined half-widths
-  if(Math.abs(vx) < combinedHalfWidths)
-  {
-    //A collision might be occurring!
-    //Check whether vy is less than the combined half-heights
-    if(Math.abs(vy) < combinedHalfHeights)
-    {
-      //A collision has occurred! This is good!
-      //Find out the size of the overlap on both the X and Y axes
-      var overlapX = combinedHalfWidths - Math.abs(vx);
-      var overlapY = combinedHalfHeights - Math.abs(vy);
+	  //Check whether vx is less than the combined half-widths
+	  if(Math.abs(vx) < combinedHalfWidths)
+	  {
+	    //A collision might be occurring!
+	    //Check whether vy is less than the combined half-heights
+	    if(Math.abs(vy) < combinedHalfHeights)
+	    {
+	      //A collision has occurred! This is good!
+	      //Find out the size of the overlap on both the X and Y axes
+	      var overlapX = combinedHalfWidths - Math.abs(vx);
+	      var overlapY = combinedHalfHeights - Math.abs(vy);
 
-      //The collision has occurred on the axis with the
-      //*smallest* amount of overlap. Let's figure out which
-      //axis that is
+	      //The collision has occurred on the axis with the
+	      //*smallest* amount of overlap. Let's figure out which
+	      //axis that is
 
-      if(overlapX >= overlapY)
-      {
-        //The collision is happening on the X axis
-        //But on which side? vy can tell us
-        if(vy > 0)
-        {
-          collisionSide = "top";
+	      if(overlapX >= overlapY)
+	      {
+	        //The collision is happening on the X axis
+	        //But on which side? vy can tell us
+	        if(vy > 0)
+	        {
+	          collisionSide = "top";
 
-          //Move the rectangle out of the collision
-          r1.y = r1.y + overlapY;
-        }
-        else
-        {
-          collisionSide = "bottom";
+	          //Move the rectangle out of the collision
+	          r1.y = r1.y + overlapY;
+	        }
+	        else
+	        {
+	          collisionSide = "bottom";
 
-          //Move the rectangle out of the collision
-          r1.y = r1.y - overlapY;
-        }
-      }
-      else
-      {
-        //The collision is happening on the Y axis
-        //But on which side? vx can tell us
-        if(vx > 0)
-        {
-          collisionSide = "left";
+	          //Move the rectangle out of the collision
+	          r1.y = r1.y - overlapY;
+	        }
+	      }
+	      else
+	      {
+	        //The collision is happening on the Y axis
+	        //But on which side? vx can tell us
+	        if(vx > 0)
+	        {
+	          collisionSide = "left";
 
-          //Move the rectangle out of the collision
-          r1.x = r1.x + overlapX;
-        }
-        else
-        {
-          collisionSide = "right";
+	          //Move the rectangle out of the collision
+	          r1.x = r1.x + overlapX;
+	        }
+	        else
+	        {
+	          collisionSide = "right";
 
-          //Move the rectangle out of the collision
-          r1.x = r1.x - overlapX;
-        }
-      }
-    }
-    else
-    {
-      //No collision
-      collisionSide = "none";
-    }
-  }
-  else
-  {
-    //No collision
-    collisionSide = "none";
-  }
+	          //Move the rectangle out of the collision
+	          r1.x = r1.x - overlapX;
+	        }
+	      }
+	    }
+	    else
+	    {
+	      //No collision
+	      collisionSide = "none";
+	    }
+	  }
+	  else
+	  {
+	    //No collision
+	    collisionSide = "none";
+	  }
 
-  return collisionSide;
-}
+	  return collisionSide;
+	}
 
 
 	function handleGameState(){
@@ -486,51 +569,6 @@ function blockRectangle(r1 = carGame.cat, r2 = carGame.box1)
 		});
 	}
 
-
- function fireMissile()
-{
-
- 	//cargame missle hide
-	console.log(carGame.paddleC.x);
-	console.log(carGame.paddleC.y);
-
-	var x = document.createElement("IMG");
-
-	// var img = document.getElementById('tetris_image')
-	x.classList.add('missle');
-	x.setAttribute("src", "../images/Missle.png");
-	x.setAttribute("width", "50");
-	x.setAttribute("height", "50");
- //	 x.classList.add('yourCssClass')
-	x.style.left =  carGame.paddleC.x + 'px';
-	x.style.top =  carGame.paddleC.y +'px';
-
- // x.style.x = '100px';
-	 x.style.position = "absolute";
-
-
-	x.setAttribute("alt", "The Pulpit Rock");
-	document.body.appendChild(x);
-
-	//carGame.missle.directionX = 1;
-	//carGame.missle.x += carGame.missle.speed * carGame.missle.directionX;
-	//carGame.missle.timer = setInterval(gameloop, 1000/30);
-	moveMissle();
-
-
-};
-
- function moveMissle(){
-
- //REFER TO RESETBALL TO CHANGE X AND Y POSITION OF ROCKET.
-//	carGame.missle.x = carGame.paddleC.x + 'px';
-	carGame.missle.directionX = 1;
-	carGame.missle.x += carGame.missle.speed * carGame.missle.directionX;
-
-	//carGame.missle2.directionX = 1;
-//	carGame.missle2.x += carGame.missle2.speed * carGame.missle2.directionX;
-
-};
 
 	//CREATES IMAGE AND ALLOWS YOU TO MOVE TO ANY LOCATION!
 //REFER TO THE CLASS ON CSS PAGE FOR X AND Y POSITION
@@ -563,182 +601,234 @@ function addImage() {
 	function boxAppear() { boxShape1(400, 250);  };
 
 	// browser render loop
-  function render() {      moveShip(); }
+  function render() {     moveShip(); }
 
 
-	function whiteMove(){   }
-
+	/*******************(*********** MOVEMENT **********)************************/
 
 	//USED TO MOVE SHIP AND PLAYER IN CORRECT DIRECTIONS
 	//DETERMINES IF PLAYER MOVES IN X OR Y DIR BY ITSELF
 
+//Variables used to setting movement of objects
+function movementVariables() {
+	gravity1 = 1;
+
+	/*    var paddleA = carGame.paddleA;
+			 paddleA.x += paddleA.speed * paddleA.directionX;
+
+			 var paddleB = carGame.paddleB;
+				paddleB.x += paddleB.speed * paddleB.directionX;
+	*/
+		var paddleC = carGame.paddleC;
+		paddleC.x += paddleC.speed * paddleC.directionX;
+
+		var missle = carGame.missle;
+		missle.x += 50 * missle.directionX;
+
+		var football = carGame.football;
+		football.x += football.speed * football.directionX;
+
+		var circle2 = carGame.circle2;
+	//	circle2.x += 1 * circle2.directionX;
+	//	circle2.y += 1 * circle2.directionY;
+
+		var circle3 = carGame.circle3;
+		circle3.x += circle3.speed * circle3.directionX;
+
+		var box = carGame.box;
+
+		var box1 = carGame.box1;
+
+		//GRAVITY FORCES:
+		var cat = carGame.cat;
+		cat.accelerationY = 10;
+		cat.y += cat.gravity * cat.accelerationY;
+
+
+
+		var cat = carGame.cat;
+			cat.x += cat.speed * cat.directionX;
+
+	//	cat.x *= .3;
+	//		cat.x += cat.speed * cat.directionX;
+
+	/*		var missle2 = carGame.missle2;
+			missle2.x += missle2.speed * missle2.directionX;
+
+			var enemy = carGame.enemy;
+			enemy.x += enemy.speed * enemy.directionX;
+	*/
+
+	$("#paddleC").css({
+		"left" : paddleC.x + paddleC.speed * paddleC.directionX,
+		"top" : paddleC.y + paddleC.speed * paddleC.directionY
+	});
+
+			/*
+	$("#paddleA").css({
+		"left" : paddleA.x + paddleA.speed * paddleA.directionX,
+		"top" : paddleA.y + paddleA.speed * paddleA.directionY
+	});
+
+	$("#paddleB").css({
+		"left" : paddleB.x + paddleB.speed * paddleB.directionX,
+		"top" : paddleB.y + paddleB.speed * paddleB.directionY
+	});
+			*/
+
+	$(".missle").css({
+		"left" : missle.x + missle.speed * missle.directionX,
+		"top" : missle.y + missle.speed * missle.directionY
+	});
+
+	$("#football").css({
+		"left" : football.x + football.speed * football.directionX,
+		"top" : football.y + football.speed * football.directionY
+	});
+
+
+	$("#circle2").css({
+		"left" : circle2.x + circle2.speed * circle2.directionX,
+		"top" : circle2.y + circle2.speed * circle2.directionY
+	});
+
+	$("#circle3").css({
+		"left" : circle3.x + circle3.speed * circle3.directionX,
+		"top" : circle3.y + circle3.speed * circle3.directionY
+	});
+
+	$("#cat").css({
+		"left" : cat.x + cat.speed * cat.directionX,
+		"top" : cat.y + cat.speed * cat.directionY
+	});
+
+	$("#box").css({
+		"left" : box.x + box.speed * box.directionX,
+		"top" : box.y + box.speed * box.directionY
+	});
+
+	$("#box1").css({
+		"left" : box1.x + box1.speed * box1.directionX,
+		"top" : box1.y + box1.speed * box1.directionY
+	});
+
+/*			$("#enemy").css({
+				"left" : enemy.x + enemy.speed * enemy.directionX,
+				"top" : enemy.y + enemy.speed * enemy.directionY
+			});
+
+			$(".missle2").css({
+				"left" : missle2.x + missle2.speed * missle2.directionX,
+				"top" : missle2.y + missle2.speed * missle2.directionY
+			});
+*/
+
+}
+
+//Collision variables
+function collisionVariables() {
+	// check right
+	if (ballHitsRightWall()) {
+		resetBall();
+		$(".missle").remove();
+	}
+
+	if(hitTestPoint( carGame.paddleC.x,  carGame.paddleC.y))
+	//if(hitTestPoint(101, 11))
+	{
+		console.log("Collision!");
+	 }  else {
+			//	 console.log("No Collision!");
+	 }
+
+	//   blockCircle(firstSprite, secondSprite);
+	//		 	 if(hitTestCircle(carGame.circle2, carGame.circle3))
+	if(blockCircle(carGame.circle2, carGame.circle3))
+		{
+			console.log("Circle Collision!");
+		}
+		else {
+				// console.log("No Collision!");
+		}
+
+//			if(hitTestRectangle(carGame.cat, carGame.box))
+
+	if(hitTestRectangle(carGame.cat, carGame.box))
+	{
+ //	console.log("Box Collision!");
+		//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
+		//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
+	showSide = blockRectangle(carGame.cat, carGame.box);
+	console.log(showSide);
+	}
+	else {
+		// console.log("No Collision!");
+	}
+
+	if(hitTestRectangle(carGame.cat, carGame.box1))
+	{
+ //	console.log("Box Collision!");
+		//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
+		//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
+//	console.log(showSide);
+	}
+	else {
+		// console.log("No Collision!");
+	}
+
+	showSide = blockRectangle(carGame.cat, carGame.box1);
+
+
+//		console.log(showSide);
+	// showSide = blockRectangle(carGame.cat, carGame.box);
+
+ //console.log(showSide);
+//	 carGame.cat.x += carGame.cat.speed * carGame.cat.directionX;
+
+ if(showSide === "bottom" && carGame.cat.speed * carGame.cat.directionX >= 0)
+	 {
+		 //Tell the game that the cat is on the ground if it's standing on top of a platform
+		isOnGround = true;
+		 //Neutralize gravity by applying its exact opposite force to the character's vy
+		 gravity1 = carGame.cat.speed * carGame.cat.directionX ;
+
+		 gravity1 = -(gravity1);
+
+	 }
+ else if(showSide === "top" && carGame.cat.speed * carGame.cat.directionX <= 0)
+	 {
+//	 cat.vy = 0;
+		}
+ else if(showSide === "right" && carGame.cat.speed * carGame.cat.directionX >= 0)
+	{
+//	cat.vx = 0;
+	}
+else if(showSide === "left" && carGame.cat.speed * carGame.cat.directionX <= 0)
+	{
+//	cat.vx = 0;
+	}
+if(showSide !== "bottom" && carGame.cat.speed  > 0)
+	{
+//		console.log('not bottom');
+		isOnGround = false;
+		//console.log(isOnGround);
+	}
+
+}
+
+
   function moveShip() {
 
-		var gravity = 0.3;
+		movementVariables();
 
-		/*    var paddleA = carGame.paddleA;
-		     paddleA.x += paddleA.speed * paddleA.directionX;
-
-				 var paddleB = carGame.paddleB;
-					paddleB.x += paddleB.speed * paddleB.directionX;
-		*/
- 	  	var paddleC = carGame.paddleC;
- 			paddleC.x += paddleC.speed * paddleC.directionX;
-
-			var missle = carGame.missle;
- 			missle.x += 50 * missle.directionX;
-
-			var football = carGame.football;
- 			football.x += football.speed * football.directionX;
-
-			var circle2 = carGame.circle2;
- 		//	circle2.x += 1 * circle2.directionX;
-		//	circle2.y += 1 * circle2.directionY;
-
-			var circle3 = carGame.circle3;
- 			circle3.x += circle3.speed * circle3.directionX;
-
-			var box = carGame.box;
-
-			var box1 = carGame.box1;
-
-			//GRAVITY FORCES:
-			var cat = carGame.cat;
-			cat.y += 5 * 1;
-
-
-			var cat = carGame.cat;
-				cat.x += cat.speed * cat.directionX;
-
-		//	cat.x *= .3;
-   	//		cat.x += cat.speed * cat.directionX;
-
-		/*		var missle2 = carGame.missle2;
-	 			missle2.x += missle2.speed * missle2.directionX;
-
-				var enemy = carGame.enemy;
-	 			enemy.x += enemy.speed * enemy.directionX;
-		*/
-		 	/*	    $("#paddleA").css({
-				      "left" : paddleA.x + paddleA.speed * paddleA.directionX,
-				      "top" : paddleA.y + paddleA.speed * paddleA.directionY
-				    });
-
-						$("#paddleB").css({
-							"left" : paddleB.x + paddleB.speed * paddleB.directionX,
-							"top" : paddleB.y + paddleB.speed * paddleB.directionY
-						});
-			*/
-			$("#paddleC").css({
-				"left" : paddleC.x + paddleC.speed * paddleC.directionX,
-				"top" : paddleC.y + paddleC.speed * paddleC.directionY
-			});
-
-			$(".missle").css({
-				"left" : missle.x + missle.speed * missle.directionX,
-				"top" : missle.y + missle.speed * missle.directionY
-			});
-
-			$("#football").css({
-				"left" : football.x + football.speed * football.directionX,
-				"top" : football.y + football.speed * football.directionY
-			});
-
-
-			$("#circle2").css({
-				"left" : circle2.x + circle2.speed * circle2.directionX,
-				"top" : circle2.y + circle2.speed * circle2.directionY
-			});
-
-			$("#circle3").css({
-				"left" : circle3.x + circle3.speed * circle3.directionX,
-				"top" : circle3.y + circle3.speed * circle3.directionY
-			});
-
-			$("#cat").css({
-				"left" : cat.x + cat.speed * cat.directionX,
-				"top" : cat.y + cat.speed * cat.directionY
-			});
-
-			$("#box").css({
-				"left" : box.x + box.speed * box.directionX,
-				"top" : box.y + box.speed * box.directionY
-			});
-
-			$("#box1").css({
-				"left" : box1.x + box1.speed * box1.directionX,
-				"top" : box1.y + box1.speed * box1.directionY
-			});
-
-		/*			$("#enemy").css({
-						"left" : enemy.x + enemy.speed * enemy.directionX,
-						"top" : enemy.y + enemy.speed * enemy.directionY
-					});
-
-					$(".missle2").css({
-						"left" : missle2.x + missle2.speed * missle2.directionX,
-						"top" : missle2.y + missle2.speed * missle2.directionY
-					});
-		*/
  			window.requestAnimationFrame(render);
 
-			// check right
-	    if (ballHitsRightWall()) {
-	      resetBall();
-				$(".missle").remove();
-	    }
+		collisionVariables();
 
-			if(hitTestPoint( carGame.paddleC.x,  carGame.paddleC.y))
-			//if(hitTestPoint(101, 11))
-			{
- 				console.log("Collision!");
-			 }  else {
- 			   	//	 console.log("No Collision!");
-			 }
-
-			//   blockCircle(firstSprite, secondSprite);
-			//		 	 if(hitTestCircle(carGame.circle2, carGame.circle3))
-	 		if(blockCircle(carGame.circle2, carGame.circle3))
-		    {
-				 	console.log("Circle Collision!");
-		    }
-		 		else {
-					 	// console.log("No Collision!");
-		    }
-
- //			if(hitTestRectangle(carGame.cat, carGame.box))
-
-			if(hitTestRectangle(carGame.cat, carGame.box))
-			{
- 		 //	console.log("Box Collision!");
-				//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
-				//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
-			showSide = blockRectangle(carGame.cat, carGame.box);
-			console.log(showSide);
- 			}
-			else {
-				// console.log("No Collision!");
-			}
-
-			if(hitTestRectangle(carGame.cat, carGame.box1))
-			{
-		 //	console.log("Box Collision!");
-				//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
-				//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
-			showSide = blockRectangle(carGame.cat, carGame.box1);
-		//	console.log(showSide);
-			}
-			else {
-				// console.log("No Collision!");
-			}
-
-			// showSide = blockRectangle(carGame.cat, carGame.box);
-
-	 	 //console.log(showSide);
-
-
+//console.log(gravity1);
   }
 
+	/*******************(************** ITEM FCNS *****)**************************/
 
 	//Useless because for each item, the style needs to change,
 	//and there are tons of variables for each thing, spped,x, y,...
@@ -749,13 +839,13 @@ function addImage() {
 	3) THE STOP VALUES IN RESETBALL()
 	*/
 
-	function getText() {
+function getText() {
 	//	$("p").text("Hello world!");
 		document.getElementById("textStuff").innerHTML = "New text!";
 
 	}
 
-	 function gameItem(item, speed, x, y, width, height, dirx, diry, image){
+ function gameItem(item, speed, x, y, width, height, dirx, diry, image){
 		var blue = item;
 
 			localStorage.setItem("savedItem", blue);
@@ -833,17 +923,13 @@ function addImage() {
 		 }
 
 
-	//object["property"] = value;
-//	gameItem('blackman');
-//	gameItem('blueman');
-
  	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
 
 	gameItem('circle2', 5, 100, 10, 100, 80, 1, 1, "url('../images/circle1.png')");
 
 	gameItem('circle3', 5, 50, 50, 100, 80, 1, 1, "url('../images/circle2.png')");
 
-	gameItem('cat', 5, 200, 140, 100, 95, 1, 1, "url('../images/cat.png')");
+	//gameItem('cat', 5, 200, 140, 100, 95, 1, 1, "url('../images/cat.png')");
 
 	gameItem('box', 5, 150, 150, 100, 80, 1, 1, "url('../images/box.png')");
 
@@ -936,7 +1022,7 @@ function addImage() {
 			 	square.style.left =   x + 'px';
 			 	square.style.top =   y +'px';
 
-				square.style.backgroundPosition = '100% 0%';
+				square.style.backgroundPosition = '0% 100%';
 
 			 // x.style.x = '100px'; backgroundPosition
 			 //square.style.backgroundSize = 'contain';
@@ -945,11 +1031,206 @@ function addImage() {
 
 		}
 
- 	tileSheetItem('monster1', 5, 50, 150, 64, 64, 1, 1, 64, 64, "url('../images/collisionTileSheet.png')");
+ //	tileSheetItem('monster1', 5, 50, 150, 64, 64, 1, 1, 64, 64, "url('../images/collisionTileSheet.png')");
 
 
+	function moveItem(item, speed, x, y, width, height, dirx, diry, gravity,
+		accelerationX, accelerationY, friction, image){
+		 var blue = item;
+
+			 localStorage.setItem("savedItem", blue);
+		 //	console.log(blue);
+				carGame[blue] = {speed: speed,
+										 x: x,
+										 y: y,
+										 width: width,
+										 height: height,
+										 directionX: dirx,
+										 directionY: diry,
+										 gravity: gravity,
+										 accelerationX: accelerationX,
+										 accelerationY: accelerationY,
+										 friction: friction,
+										 //Point properties
+										 left: function()
+										 {
+											 return this.x;
+										 },
+										 right: function()
+										 {
+											 return this.x + this.width;
+										 },
+										 top: function()
+										 {
+											 return this.y;
+										 },
+										 bottom: function()
+										 {
+											 return this.y + this.height;
+										 },
+										 //Circle Properties
+										 centerX: function()
+										 {
+											 return this.x + (this.width / 2);
+										 },
+										 centerY: function()
+										 {
+											 return this.y + (this.height / 2);
+										 },
+										 halfWidth: function()
+										 {
+											 return this.width / 2;
+										 },
+										 halfHeight: function()
+										 {
+											 return this.height / 2;
+										 }
+
+
+										};
+
+			 //	localStorage.setItem("savedItem2", blue2);
+		 //		console.log(blue2);
+
+			 //	var raptor =localStorage.getItem("savedItem2");
+			 //	console.log(raptor[blue]);
+
+				 // RESETS IMAGE TO PARTICULAR LOCATION
+				 if (ballHitsRightWall()) {
+					 blue2.x = 200;
+				 blue2.y = 80;
+				 blue2.directionX = 0;
+				 }
+
+					 //CREATE DOM ELEMENT
+			 var para = document.createElement("div");
+			 para.id = blue;
+
+			 var element = document.getElementById("gameAssets");
+			 var child = document.getElementById(blue);
+			 element.insertBefore(para,child);
+
+						 //CHANGE STYLE OF DOC ELEMENT
+			 var square = document.getElementById(blue);
+			 square.style.backgroundImage = image;
+
+			}
+
+//	moveItem('cat', 5, 200, 140, 100, 95, 1, 1, 0.3, 0, 0, 0.96, "url('../images/cat.png')");
+
+
+	function moveItem2(item, speed, x, y, width, height, dirx, diry, gravity,
+		accelerationX, accelerationY, friction, image){
+		 var blue = item;
+
+			 localStorage.setItem("savedItem", blue);
+		 //	console.log(blue);
+				carGame[blue] = {speed: speed,
+										 x: x,
+										 y: y,
+										 width: width,
+										 height: height,
+										 directionX: dirx,
+										 directionY: diry,
+										 gravity: gravity,
+										 accelerationX: accelerationX,
+										 accelerationY: accelerationY,
+										 friction: friction,
+										 //Point properties
+										 left: function()
+										 {
+											 return this.x;
+										 },
+										 right: function()
+										 {
+											 return this.x + this.width;
+										 },
+										 top: function()
+										 {
+											 return this.y;
+										 },
+										 bottom: function()
+										 {
+											 return this.y + this.height;
+										 },
+										 //Circle Properties
+										 centerX: function()
+										 {
+											 return this.x + (this.width / 2);
+										 },
+										 centerY: function()
+										 {
+											 return this.y + (this.height / 2);
+										 },
+										 halfWidth: function()
+										 {
+											 return this.width / 2;
+										 },
+										 halfHeight: function()
+										 {
+											 return this.height / 2;
+										 }
+
+
+										};
+
+			 //	localStorage.setItem("savedItem2", blue2);
+		 //		console.log(blue2);
+
+			 //	var raptor =localStorage.getItem("savedItem2");
+			 //	console.log(raptor[blue]);
+
+				 // RESETS IMAGE TO PARTICULAR LOCATION
+				 if (ballHitsRightWall()) {
+					 blue2.x = 200;
+				 blue2.y = 80;
+				 blue2.directionX = 0;
+				 }
+
+					 //CREATE DOM ELEMENT
+			 var para = document.createElement("div");
+			 para.id = blue;
+
+			 var element = document.getElementById("gameAssets");
+			 var child = document.getElementById(blue);
+			 element.insertBefore(para,child);
+
+						 //CHANGE STYLE OF DOC ELEMENT
+			 var square = document.getElementById(blue);
+			 square.style.backgroundImage = image;
+			 square.sourceX =   '100px';
+			 square.sourceY =    0;
+
+		 //square.style.sourceX =   '0';
+  				square.style.width = width+ 'px';
+				square.style.height = height+ 'px';
+
+			 	square.style.left =   x + 'px';
+			 	square.style.top =   y +'px';
+
+				square.style.backgroundPosition = '0% 0%';
+
+			 // x.style.x = '100px'; backgroundPosition
+			// square.style.backgroundSize = 'contain';
+
+			 	square.style.position = 'absolute';
+
+			}
+
+	/*	THIS WORKS PERFECT!!!!!
+			THE CHARACTER FLOATS ON GROUND CORRECTLY, AND HAS THE PERFECT DIMENSIONS
+			THIS IS PROBABLY DUE TO FACT THAT OLD CHARACTER WAS USED ON BOX OBJECT, AND DIMENSIONS
+			ARE CORRECTLY MADE!!!!
+			*/
+			moveItem2('cat', 5, 50, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/collisionTileSheet.png')");
+
+
+
+	console.log(carGame.cat);
 
 //	console.log(carGame);
+
+/*********************(******** RESET FCNS ********)***************************/
 
 	  function ballHitsRightWall() {
 	//    return carGame.paddleB.x + carGame.paddleB.speed * carGame.paddleB.directionX > 500;
@@ -1068,6 +1349,8 @@ function addImage() {
 	}
 
 
+/*********************(****** 2D BOX FCNS ********)**************************/
+
 	function showDebugDraw() {
 		shouldDrawDebug = true;
 
@@ -1083,7 +1366,6 @@ function addImage() {
 
 		carGame.world.DrawDebugData();
 	}
-
 
 	function updateWorld() {
 		// Move the physics world 1 step forward.
@@ -1107,7 +1389,6 @@ function addImage() {
 
 			//checkCollision();
 	}
-
 
 	// Create and return the Box2D world.
 	function createWorld() {
@@ -1221,7 +1502,6 @@ function addImage() {
 		return body;
 	}
 
-
 	// create a static ground body.
 	function LineShape1(x, y, width, height, rotation) {
 		var bodyDef = new b2BodyDef;
@@ -1247,7 +1527,6 @@ function addImage() {
 		return body;
 	}
 
-
 	// temporary function
 	function boxShape1(x, y) {
 		var bodyDef = new b2BodyDef;
@@ -1269,7 +1548,6 @@ function addImage() {
 
 		return body;
 	}
-
 
 	function createSimplePolygonBody(x,y) {
 	    var bodyDef = new b2BodyDef;
