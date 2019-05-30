@@ -29,12 +29,13 @@
 }
 
 html, body{
-   background: url(../images/website_background.jpg);
+   background: url(../images/sky.png);
 
 font-family: 'Play', arial, serif;
 }
 
  }
+
 
 #boaderTop {
     background: url(../images/boarder.png);
@@ -168,7 +169,7 @@ background-size: contain;
   }
 */
 
-  #textStuff {
+   #textStuff {
   /*  margin-top: 60px;   */
 
   left: 10px;
@@ -209,6 +210,15 @@ background-size: contain;
     }
 
 
+    #grass {
+    /*  margin-top: 60px;   */
+
+      /*THIS IS USED FOR TILESHEET POSITION! */
+
+       }
+
+
+
 #ship22 {
 /*  margin-top: 60px;   */
 
@@ -233,15 +243,12 @@ background-size: contain;
 
    #enemy {
 
-     left: 80px;
-      width:80px;
-     height:100px;
 
-     background-size: contain;
-      position: absolute;
 
-     background-image: url(../images/enemy.png);
-    }
+     }
+
+     #door {
+        }
 
     #football {
     /*  margin-top: 60px;   */
@@ -295,7 +302,7 @@ top:200px;
 }
 
 .gamebg-level0 {
-  background: #eee url(../images/star.png);
+/*  background: #eee url(../images/star.png);  */
 }
 
 .gamebg-level1 {

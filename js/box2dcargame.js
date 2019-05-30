@@ -167,10 +167,18 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 	 	handleGameState();
 
+		carGame.cat.directionX = 0;
+
+		carGame.enemy.directionX = 0;
+
+		moveEnemyRight();
 
   //	setTimeout( checkxvalue , 9000);
 
 	//	createBox(600, 250);
+
+	//	setTimeout( enemyAI , 2000);
+
 
 	//	LineShape1(600, 150, 50, 50, 0);
 
@@ -213,6 +221,8 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 
 		moveCharacter();		//CONTROLS
+
+	//	enemeyController();
 
 		window.requestAnimationFrame(render);
 
@@ -288,8 +298,13 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
    //TO HALF JUMP: COUNT NUMBER OF TIMES THAT SPACEBAR IS HELD DOWN:
 	 //IF LESS THAN CERTAIN AMOUNT CHANGE THE SETTIMEOUT TO NORMAL
 
-			if(showSide === "bottom"  )
+	 	//I CAN CHANGE THE MOVEMENT STUFF USING SHOWSIDE == BOTTOM!!!!!
+			if(showSide === "bottom" || showSide1 === "bottom"  || showSide2 === "bottom" || showSide3 === "bottom")
 				{
+					console.log(showSide);
+						//CHANGES THE TILESHEET:
+			//		var square = document.getElementById('cat');
+				//	square.style.backgroundPosition = '0% 50%';
 
  					//	 isOnGround = true;
  					//	gravity1 = carGame.cat.speed * carGame.cat.directionX ;
@@ -317,6 +332,8 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 			//
 				}
+				//var square = document.getElementById('cat');
+				//square.style.backgroundPosition = '0% 0%';
 
 
 
@@ -326,6 +343,61 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 		}
 	});
   }
+
+	function enemeyController(){
+ 	$(document).keydown(function(e){
+		switch(e.keyCode) {
+			case 38: // UP
+
+ 				return false;
+				break;
+
+			case 40: //  DOWN
+
+		carGame.enemy.directionX = 0;
+
+ 				return false;
+				break;
+
+			case 39: // RIGHT
+
+				carGame.enemy.directionX = 1;
+				carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+
+  				return false;
+				break;
+
+			case 37: // LEFT
+
+				carGame.enemy.directionX = -1;
+				carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+
+ 				return false;
+				break;
+
+		}
+	});
+  }
+
+function moveEnemyRight() {
+	carGame.enemy.directionX = 1;
+	carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+ //setTimeout( moveEnemyLeft , 9000);
+ 	console.log(carGame.enemy.x);
+ }
+
+
+function moveEnemyLeft() {
+	carGame.enemy.directionX = 1;
+	carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+ //setTimeout( checkxvalue , 9000);
+
+}
+
+
+
+	/********************(****** MOVEMENT FCNS ****)*****************************/
+
 
 	function setGravityback() {
 		carGame.cat.gravity = 0.7
@@ -375,7 +447,6 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
  //	carGame.missle2.x += carGame.missle2.speed * carGame.missle2.directionX;
 
  };
-
 
 
   function hitTestPoint(pointX, pointY)
@@ -553,6 +624,118 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	}
 
 
+	function hitTestRectangle2 (r1 = carGame.enemy, r2 = carGame.box1)
+{
+	//A variable to determine whether there's a collision
+	var hit = false;
+	//Calculate the distance vector
+	var vx = r1.centerX() - r2.centerX();
+	var vy = r1.centerY() - r2.centerY();
+	//Figure out the combined half-widths and half-heights
+	var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
+	var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
+	//Check for a collision on the X axis
+	if(Math.abs(vx) < combinedHalfWidths)
+	{
+		//A collision might be occurring. Check for a collision on the Y axis
+		if(Math.abs(vy) < combinedHalfHeights)
+		{
+			//There's definitely a collision happening
+			hit = true;
+		} else {
+						//There's no collision on the Y axis
+			hit = false;
+		}
+	} else {
+		//There's no collision on the X axis
+		hit = false; }
+		return hit;
+}
+
+function blockRectangle2(r1 = carGame.enemy, r2 = carGame.box1)
+{
+	//A variable to tell us which side the collision is occurring on
+	var collisionSide = "";
+
+	//Calculate the distance vector
+	var vx = r1.centerX() - r2.centerX();
+	var vy = r1.centerY() - r2.centerY();
+
+	//Figure out the combined half-widths and half-heights
+	var combinedHalfWidths = r1.halfWidth() + r2.halfWidth();
+	var combinedHalfHeights = r1.halfHeight() + r2.halfHeight();
+
+	//Check whether vx is less than the combined half-widths
+	if(Math.abs(vx) < combinedHalfWidths)
+	{
+		//A collision might be occurring!
+		//Check whether vy is less than the combined half-heights
+		if(Math.abs(vy) < combinedHalfHeights)
+		{
+			//A collision has occurred! This is good!
+			//Find out the size of the overlap on both the X and Y axes
+			var overlapX = combinedHalfWidths - Math.abs(vx);
+			var overlapY = combinedHalfHeights - Math.abs(vy);
+
+			//The collision has occurred on the axis with the
+			//*smallest* amount of overlap. Let's figure out which
+			//axis that is
+
+			if(overlapX >= overlapY)
+			{
+				//The collision is happening on the X axis
+				//But on which side? vy can tell us
+				if(vy > 0)
+				{
+					collisionSide = "top";
+
+					//Move the rectangle out of the collision
+					r1.y = r1.y + overlapY;
+				}
+				else
+				{
+					collisionSide = "bottom";
+
+					//Move the rectangle out of the collision
+					r1.y = r1.y - overlapY;
+				}
+			}
+			else
+			{
+				//The collision is happening on the Y axis
+				//But on which side? vx can tell us
+				if(vx > 0)
+				{
+					collisionSide = "left";
+
+					//Move the rectangle out of the collision
+					r1.x = r1.x + overlapX;
+				}
+				else
+				{
+					collisionSide = "right";
+
+					//Move the rectangle out of the collision
+					r1.x = r1.x - overlapX;
+				}
+			}
+		}
+		else
+		{
+			//No collision
+			collisionSide = "none";
+		}
+	}
+	else
+	{
+		//No collision
+		collisionSide = "none";
+	}
+
+	return collisionSide;
+}
+
+
 	function handleGameState(){
 		// set the game state as "starting screen"
 		carGame.state = carGame.STATE_STARTING_SCREEN;
@@ -625,7 +808,7 @@ function movementVariables() {
 		var missle = carGame.missle;
 		missle.x += 50 * missle.directionX;
 
-		var football = carGame.football;
+	/*	var football = carGame.football;
 		football.x += football.speed * football.directionX;
 
 		var circle2 = carGame.circle2;
@@ -634,7 +817,7 @@ function movementVariables() {
 
 		var circle3 = carGame.circle3;
 		circle3.x += circle3.speed * circle3.directionX;
-
+*/
 		var box = carGame.box;
 
 		var box1 = carGame.box1;
@@ -648,6 +831,14 @@ function movementVariables() {
 
 		var cat = carGame.cat;
 			cat.x += cat.speed * cat.directionX;
+
+
+			var enemy = carGame.enemy;
+			enemy.x += enemy.speed * enemy.directionX;
+
+
+  					enemy.accelerationY = 10;
+					enemy.y += enemy.gravity * enemy.accelerationY;
 
 	//	cat.x *= .3;
 	//		cat.x += cat.speed * cat.directionX;
@@ -681,7 +872,7 @@ function movementVariables() {
 		"top" : missle.y + missle.speed * missle.directionY
 	});
 
-	$("#football").css({
+/*	$("#football").css({
 		"left" : football.x + football.speed * football.directionX,
 		"top" : football.y + football.speed * football.directionY
 	});
@@ -696,7 +887,7 @@ function movementVariables() {
 		"left" : circle3.x + circle3.speed * circle3.directionX,
 		"top" : circle3.y + circle3.speed * circle3.directionY
 	});
-
+*/
 	$("#cat").css({
 		"left" : cat.x + cat.speed * cat.directionX,
 		"top" : cat.y + cat.speed * cat.directionY
@@ -711,6 +902,12 @@ function movementVariables() {
 		"left" : box1.x + box1.speed * box1.directionX,
 		"top" : box1.y + box1.speed * box1.directionY
 	});
+
+	$("#enemy").css({
+		"left" : enemy.x + enemy.speed * enemy.directionX,
+		"top" : enemy.y + enemy.speed * enemy.directionY
+	});
+
 
 /*			$("#enemy").css({
 				"left" : enemy.x + enemy.speed * enemy.directionX,
@@ -733,6 +930,23 @@ function collisionVariables() {
 		$(".missle").remove();
 	}
 
+	//ENEMEY AI MOVEMENT!
+for (var i = 0; i < 1000; i++) {
+		if ( carGame.enemy.x + carGame.enemy.speed * carGame.enemy.directionX > 800 ) {
+ 		 //resetBall();
+ 		 carGame.enemy.directionX = -1;
+			carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+	 }
+
+	 if ( carGame.enemy.x + carGame.enemy.speed * carGame.enemy.directionX < 400 ) {
+  		carGame.enemy.directionX = 1;
+		 carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+	}
+}
+
+
+
+/*
 	if(hitTestPoint( carGame.paddleC.x,  carGame.paddleC.y))
 	//if(hitTestPoint(101, 11))
 	{
@@ -740,9 +954,12 @@ function collisionVariables() {
 	 }  else {
 			//	 console.log("No Collision!");
 	 }
+*/
 
 	//   blockCircle(firstSprite, secondSprite);
 	//		 	 if(hitTestCircle(carGame.circle2, carGame.circle3))
+
+/*
 	if(blockCircle(carGame.circle2, carGame.circle3))
 		{
 			console.log("Circle Collision!");
@@ -750,7 +967,7 @@ function collisionVariables() {
 		else {
 				// console.log("No Collision!");
 		}
-
+*/
 //			if(hitTestRectangle(carGame.cat, carGame.box))
 
 	if(hitTestRectangle(carGame.cat, carGame.box))
@@ -777,6 +994,20 @@ function collisionVariables() {
 	}
 
 	showSide = blockRectangle(carGame.cat, carGame.box1);
+
+	showSide1 = blockRectangle(carGame.cat, carGame.box2);
+
+	showSide2 = blockRectangle(carGame.cat, carGame.grass);
+
+	showSide3 = blockRectangle(carGame.cat, carGame.box3);
+
+	showSide4 = blockRectangle(carGame.enemy, carGame.box3);
+
+	showSide5 = blockRectangle(carGame.cat, carGame.box4);
+
+	//showSide5 = blockRectangle(carGame.enemy, carGame.box3);
+
+//	console.log(showSide);
 
 
 //		console.log(showSide);
@@ -923,11 +1154,11 @@ function getText() {
 		 }
 
 
- 	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
+ //	gameItem('football', 5, 100, 10, 100, 80, 1, 1, "url('../images/football-player.png')");
 
-	gameItem('circle2', 5, 100, 10, 100, 80, 1, 1, "url('../images/circle1.png')");
+	//gameItem('circle2', 5, 100, 10, 100, 80, 1, 1, "url('../images/circle1.png')");
 
-	gameItem('circle3', 5, 50, 50, 100, 80, 1, 1, "url('../images/circle2.png')");
+//	gameItem('circle3', 5, 50, 50, 100, 80, 1, 1, "url('../images/circle2.png')");
 
 	//gameItem('cat', 5, 200, 140, 100, 95, 1, 1, "url('../images/cat.png')");
 
@@ -1034,7 +1265,7 @@ function getText() {
  //	tileSheetItem('monster1', 5, 50, 150, 64, 64, 1, 1, 64, 64, "url('../images/collisionTileSheet.png')");
 
 
-	function moveItem(item, speed, x, y, width, height, dirx, diry, gravity,
+	function backgroundItems(item, speed, x, y, width, height, dirx, diry, gravity,
 		accelerationX, accelerationY, friction, image){
 		 var blue = item;
 
@@ -1113,13 +1344,34 @@ function getText() {
 						 //CHANGE STYLE OF DOC ELEMENT
 			 var square = document.getElementById(blue);
 			 square.style.backgroundImage = image;
+ 		 //square.style.sourceX =   '0';
+  				square.style.width = width+ 'px';
+				square.style.height = height+ 'px';
+
+			 	square.style.left =   x + 'px';
+			 	square.style.top =   y +'px';
+
+			//	square.style.backgroundPosition = '25% 10%';
+
+			 // x.style.x = '100px'; backgroundPosition
+			  square.style.backgroundSize = 'contain';
+
+			 square.style.position = 'absolute';
 
 			}
 
 //	moveItem('cat', 5, 200, 140, 100, 95, 1, 1, 0.3, 0, 0, 0.96, "url('../images/cat.png')");
 
+backgroundItems('box2', 5, 200, 540, 800, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
 
-	function moveItem2(item, speed, x, y, width, height, dirx, diry, gravity,
+backgroundItems('box3', 5, 400, 140, 500, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+
+backgroundItems('box4', 5, 800, 0, 400, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+
+backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../images/grass.png')");
+
+
+ 	function player(item, speed, x, y, width, height, dirx, diry, gravity,
 		accelerationX, accelerationY, friction, image){
 		 var blue = item;
 
@@ -1222,9 +1474,209 @@ function getText() {
 			THIS IS PROBABLY DUE TO FACT THAT OLD CHARACTER WAS USED ON BOX OBJECT, AND DIMENSIONS
 			ARE CORRECTLY MADE!!!!
 			*/
-			moveItem2('cat', 5, 50, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/collisionTileSheet.png')");
+			player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 
+
+	function enemy(item, speed, x, y, width, height, dirx, diry, gravity,
+		accelerationX, accelerationY, friction, image){
+	 		 var blue = item;
+
+	 			 localStorage.setItem("savedItem", blue);
+	 		 //	console.log(blue);
+	 				carGame[blue] = {speed: speed,
+	 										 x: x,
+	 										 y: y,
+	 										 width: width,
+	 										 height: height,
+	 										 directionX: dirx,
+	 										 directionY: diry,
+	 										 gravity: gravity,
+	 										 accelerationX: accelerationX,
+	 										 accelerationY: accelerationY,
+	 										 friction: friction,
+	 										 //Point properties
+	 										 left: function()
+	 										 {
+	 											 return this.x;
+	 										 },
+	 										 right: function()
+	 										 {
+	 											 return this.x + this.width;
+	 										 },
+	 										 top: function()
+	 										 {
+	 											 return this.y;
+	 										 },
+	 										 bottom: function()
+	 										 {
+	 											 return this.y + this.height;
+	 										 },
+	 										 //Circle Properties
+	 										 centerX: function()
+	 										 {
+	 											 return this.x + (this.width / 2);
+	 										 },
+	 										 centerY: function()
+	 										 {
+	 											 return this.y + (this.height / 2);
+	 										 },
+	 										 halfWidth: function()
+	 										 {
+	 											 return this.width / 2;
+	 										 },
+	 										 halfHeight: function()
+	 										 {
+	 											 return this.height / 2;
+	 										 }
+
+
+	 										};
+
+	 			 //	localStorage.setItem("savedItem2", blue2);
+	 		 //		console.log(blue2);
+
+	 			 //	var raptor =localStorage.getItem("savedItem2");
+	 			 //	console.log(raptor[blue]);
+
+	 				 // RESETS IMAGE TO PARTICULAR LOCATION
+	 				 if (ballHitsRightWall()) {
+	 					 blue2.x = 200;
+	 				 blue2.y = 80;
+	 				 blue2.directionX = 0;
+	 				 }
+
+	 					 //CREATE DOM ELEMENT
+	 			 var para = document.createElement("div");
+	 			 para.id = blue;
+
+	 			 var element = document.getElementById("gameAssets");
+	 			 var child = document.getElementById(blue);
+	 			 element.insertBefore(para,child);
+
+	 						 //CHANGE STYLE OF DOC ELEMENT
+	 			 var square = document.getElementById(blue);
+	 			 square.style.backgroundImage = image;
+	 			 square.sourceX =   '100px';
+	 			 square.sourceY =    0;
+
+	 		 //square.style.sourceX =   '0';
+	   				square.style.width = width+ 'px';
+	 				square.style.height = height+ 'px';
+
+	 			 	square.style.left =   x + 'px';
+	 			 	square.style.top =   y +'px';
+
+	 				square.style.backgroundPosition = '50% 0%';
+
+	 			 // x.style.x = '100px'; backgroundPosition
+	 			// square.style.backgroundSize = 'contain';
+
+	 			 	square.style.position = 'absolute';
+
+	 			}
+
+		enemy('enemy', 5, 400, 60, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+
+
+		function doorItem(item, speed, x, y, width, height, dirx, diry, gravity, accelerationX, accelerationY, friction, image){
+		 		 var blue = item;
+
+		 			 localStorage.setItem("savedItem", blue);
+		 		 //	console.log(blue);
+		 				carGame[blue] = {speed: speed,
+		 										 x: x,
+		 										 y: y,
+		 										 width: width,
+		 										 height: height,
+		 										 directionX: dirx,
+		 										 directionY: diry,
+		 										 gravity: gravity,
+		 										 accelerationX: accelerationX,
+		 										 accelerationY: accelerationY,
+		 										 friction: friction,
+		 										 //Point properties
+		 										 left: function()
+		 										 {
+		 											 return this.x;
+		 										 },
+		 										 right: function()
+		 										 {
+		 											 return this.x + this.width;
+		 										 },
+		 										 top: function()
+		 										 {
+		 											 return this.y;
+		 										 },
+		 										 bottom: function()
+		 										 {
+		 											 return this.y + this.height;
+		 										 },
+		 										 //Circle Properties
+		 										 centerX: function()
+		 										 {
+		 											 return this.x + (this.width / 2);
+		 										 },
+		 										 centerY: function()
+		 										 {
+		 											 return this.y + (this.height / 2);
+		 										 },
+		 										 halfWidth: function()
+		 										 {
+		 											 return this.width / 2;
+		 										 },
+		 										 halfHeight: function()
+		 										 {
+		 											 return this.height / 2;
+		 										 }
+
+
+		 										};
+
+		 			 //	localStorage.setItem("savedItem2", blue2);
+		 		 //		console.log(blue2);
+
+		 			 //	var raptor =localStorage.getItem("savedItem2");
+		 			 //	console.log(raptor[blue]);
+
+		 				 // RESETS IMAGE TO PARTICULAR LOCATION
+		 				 if (ballHitsRightWall()) {
+		 					 blue2.x = 200;
+		 				 blue2.y = 80;
+		 				 blue2.directionX = 0;
+		 				 }
+
+		 					 //CREATE DOM ELEMENT
+		 			 var para = document.createElement("div");
+		 			 para.id = blue;
+
+		 			 var element = document.getElementById("gameAssets");
+		 			 var child = document.getElementById(blue);
+		 			 element.insertBefore(para,child);
+
+		 						 //CHANGE STYLE OF DOC ELEMENT
+		 			 var square = document.getElementById(blue);
+		 			 square.style.backgroundImage = image;
+		 			 square.sourceX =   '100px';
+		 			 square.sourceY =    0;
+
+		 		 //square.style.sourceX =   '0';
+		   				square.style.width = width+ 'px';
+		 				square.style.height = height+ 'px';
+
+		 			 	square.style.left =   x + 'px';
+		 			 	square.style.top =   y +'px';
+
+		 				square.style.backgroundPosition = '50% 25%';
+
+		 			 // x.style.x = '100px'; backgroundPosition
+		 			// square.style.backgroundSize = 'contain';
+
+		 			 	square.style.position = 'absolute';
+
+		 			}
+
+		 doorItem('door', 5, 1100, -65, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 	console.log(carGame.cat);
 
@@ -1254,7 +1706,7 @@ function getText() {
 		carGame.missle.x = carGame.paddleC.x;
 		carGame.missle.y = carGame.paddleC.y + 70;
 
-		carGame.football.x = 300;
+	/*	carGame.football.x = 300;
 		carGame.football.y = 10;
 
 		carGame.circle2.x = 300;
@@ -1262,7 +1714,7 @@ function getText() {
 
 		carGame.circle3.x = 200;
 		carGame.circle3.y = 100;
-
+*/
 //console.log(carGame.football);
 	//	carGame.missle2.x =  50;
 	//	carGame.missle2.y = 50;
@@ -1272,9 +1724,9 @@ function getText() {
 	//	carGame.paddleB.directionX = 0;
 		carGame.paddleC.directionX = 0;
 		carGame.missle.directionX = 0;
-		carGame.football.directionX = 0;
-		carGame.circle2.directionX = 0;
-		carGame.circle3.directionX = 0;
+	//	carGame.football.directionX = 0;
+	//	carGame.circle2.directionX = 0;
+	//	carGame.circle3.directionX = 0;
 
 	//	carGame.missle2.directionX = 0;
 
