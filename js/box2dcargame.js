@@ -161,6 +161,11 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	function initGame() {
 
 
+		// place in init code
+		//Sounds, REFER TO FUNCITON BELOW:
+		myMusic = new sound("../media/dk2.mp3");
+		myMusic.play();
+
 		carGame.world = createWorld();
 
 		console.log("The world is created. ",carGame.world);
@@ -379,20 +384,42 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	});
   }
 
-function moveEnemyRight() {
-	carGame.enemy.directionX = 1;
-	carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
- //setTimeout( moveEnemyLeft , 9000);
- 	console.log(carGame.enemy.x);
- }
+	function moveEnemyRight() {
+		carGame.enemy.directionX = 1;
+		carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+	 //setTimeout( moveEnemyLeft , 9000);
+	 	console.log(carGame.enemy.x);
+	 }
 
 
-function moveEnemyLeft() {
-	carGame.enemy.directionX = 1;
-	carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
- //setTimeout( checkxvalue , 9000);
+	function moveEnemyLeft() {
+		carGame.enemy.directionX = 1;
+		carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+	 //setTimeout( checkxvalue , 9000);
 
-}
+	}
+
+	function sound(src) {
+	    this.sound = document.createElement("audio");
+	    this.sound.src = src;
+	    this.sound.setAttribute("preload", "auto");
+	    this.sound.setAttribute("controls", "none");
+	    this.sound.style.display = "none";
+	    document.body.appendChild(this.sound);
+	    this.play = function(){
+	        this.sound.play();
+	    }
+	    this.stop = function(){
+	        this.sound.pause();
+	    }
+	}
+/*
+// place in init code
+//Sounds, REFER TO FUNCITON BELOW:
+myMusic = new sound("media/dk2.mp3");
+myMusic.play();
+
+*/
 
 
 
@@ -652,7 +679,7 @@ function moveEnemyLeft() {
 		return hit;
 }
 
-function blockRectangle2(r1 = carGame.enemy, r2 = carGame.box1)
+	function blockRectangle2(r1 = carGame.enemy, r2 = carGame.box1)
 {
 	//A variable to tell us which side the collision is occurring on
 	var collisionSide = "";
@@ -754,28 +781,28 @@ function blockRectangle2(r1 = carGame.enemy, r2 = carGame.box1)
 
 
 	//CREATES IMAGE AND ALLOWS YOU TO MOVE TO ANY LOCATION!
-//REFER TO THE CLASS ON CSS PAGE FOR X AND Y POSITION
-//ALSO NOTE THAT ITS ABSOLUTE POSITIONING.
+	//REFER TO THE CLASS ON CSS PAGE FOR X AND Y POSITION
+	//ALSO NOTE THAT ITS ABSOLUTE POSITIONING.
 
-function addImage() {
-	var x = document.createElement("IMG");
+	function addImage() {
+		var x = document.createElement("IMG");
 
-	console.log(carGame.paddleC.x);
- // var img = document.getElementById('tetris_image')
-	x.classList.add('.missle');
-	x.setAttribute("src", "../images/Missle.png");
-	x.setAttribute("width", "50");
-	x.setAttribute("height", "50");
- //	x.style.marginLeft = carGame.paddleC.x+ 'px';
- x.style.x = '100px';
-	 x.style.position = "absolute";
-	 console.log(carGame.paddleC.x);
+		console.log(carGame.paddleC.x);
+	 // var img = document.getElementById('tetris_image')
+		x.classList.add('.missle');
+		x.setAttribute("src", "../images/Missle.png");
+		x.setAttribute("width", "50");
+		x.setAttribute("height", "50");
+	 //	x.style.marginLeft = carGame.paddleC.x+ 'px';
+	 x.style.x = '100px';
+		 x.style.position = "absolute";
+		 console.log(carGame.paddleC.x);
 
 
-	x.setAttribute("alt", "The Pulpit Rock");
-	document.body.appendChild(x);
-	//document.body.appendChild(domElement);
-}
+		x.setAttribute("alt", "The Pulpit Rock");
+		document.body.appendChild(x);
+		//document.body.appendChild(domElement);
+	}
 
 
 	//NOTE THE SETTIMEOUT FUNCTION WILL ONLY WORK IF FUNCTION IS DEFINED OUTSIDE OF INIT!!!
@@ -945,6 +972,17 @@ for (var i = 0; i < 1000; i++) {
 }
 
 
+//ENEMY GETS TO DOOR AND TRIGGERS ALERT MESSAGE!
+if ( carGame.cat.x + carGame.cat.speed * carGame.cat.directionX > 1000 ) {
+
+	document.getElementById("textStuff").innerHTML = "";
+	document.getElementById("textStuff").innerHTML = "You win!";
+
+ //alert('You have won');
+}
+
+
+
 
 /*
 	if(hitTestPoint( carGame.paddleC.x,  carGame.paddleC.y))
@@ -982,12 +1020,18 @@ for (var i = 0; i < 1000; i++) {
 		// console.log("No Collision!");
 	}
 
-	if(hitTestRectangle(carGame.cat, carGame.box1))
+	if(hitTestRectangle(carGame.enemy, carGame.cat))
 	{
- //	console.log("Box Collision!");
-		//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
-		//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
-//	console.log(showSide);
+		 //	console.log("Box Collision!");
+				//THIS WORKS, IF PROBLEMS PUT THIS OUTSIDE OF THIS FUNCTION!
+				//ALSO SWITCH CAT AND BOX ARGUMENTS TO MAKE BOX MOVE!
+	   //	 console.log(showSide6);
+
+		 if (showSide6 === 'left' || showSide6 ==='right') {
+			 console.log('player was hit');
+		 } else if (showSide6 === 'bottom') {
+			 console.log('enemy was destroyed!');
+		 }
 	}
 	else {
 		// console.log("No Collision!");
@@ -1004,6 +1048,8 @@ for (var i = 0; i < 1000; i++) {
 	showSide4 = blockRectangle(carGame.enemy, carGame.box3);
 
 	showSide5 = blockRectangle(carGame.cat, carGame.box4);
+
+	showSide6 = blockRectangle(carGame.cat, carGame.enemy);
 
 	//showSide5 = blockRectangle(carGame.enemy, carGame.box3);
 
@@ -1371,113 +1417,6 @@ backgroundItems('box4', 5, 800, 0, 400, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../imag
 backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../images/grass.png')");
 
 
- 	function player(item, speed, x, y, width, height, dirx, diry, gravity,
-		accelerationX, accelerationY, friction, image){
-		 var blue = item;
-
-			 localStorage.setItem("savedItem", blue);
-		 //	console.log(blue);
-				carGame[blue] = {speed: speed,
-										 x: x,
-										 y: y,
-										 width: width,
-										 height: height,
-										 directionX: dirx,
-										 directionY: diry,
-										 gravity: gravity,
-										 accelerationX: accelerationX,
-										 accelerationY: accelerationY,
-										 friction: friction,
-										 //Point properties
-										 left: function()
-										 {
-											 return this.x;
-										 },
-										 right: function()
-										 {
-											 return this.x + this.width;
-										 },
-										 top: function()
-										 {
-											 return this.y;
-										 },
-										 bottom: function()
-										 {
-											 return this.y + this.height;
-										 },
-										 //Circle Properties
-										 centerX: function()
-										 {
-											 return this.x + (this.width / 2);
-										 },
-										 centerY: function()
-										 {
-											 return this.y + (this.height / 2);
-										 },
-										 halfWidth: function()
-										 {
-											 return this.width / 2;
-										 },
-										 halfHeight: function()
-										 {
-											 return this.height / 2;
-										 }
-
-
-										};
-
-			 //	localStorage.setItem("savedItem2", blue2);
-		 //		console.log(blue2);
-
-			 //	var raptor =localStorage.getItem("savedItem2");
-			 //	console.log(raptor[blue]);
-
-				 // RESETS IMAGE TO PARTICULAR LOCATION
-				 if (ballHitsRightWall()) {
-					 blue2.x = 200;
-				 blue2.y = 80;
-				 blue2.directionX = 0;
-				 }
-
-					 //CREATE DOM ELEMENT
-			 var para = document.createElement("div");
-			 para.id = blue;
-
-			 var element = document.getElementById("gameAssets");
-			 var child = document.getElementById(blue);
-			 element.insertBefore(para,child);
-
-						 //CHANGE STYLE OF DOC ELEMENT
-			 var square = document.getElementById(blue);
-			 square.style.backgroundImage = image;
-			 square.sourceX =   '100px';
-			 square.sourceY =    0;
-
-		 //square.style.sourceX =   '0';
-  				square.style.width = width+ 'px';
-				square.style.height = height+ 'px';
-
-			 	square.style.left =   x + 'px';
-			 	square.style.top =   y +'px';
-
-				square.style.backgroundPosition = '0% 0%';
-
-			 // x.style.x = '100px'; backgroundPosition
-			// square.style.backgroundSize = 'contain';
-
-			 	square.style.position = 'absolute';
-
-			}
-
-	/*	THIS WORKS PERFECT!!!!!
-			THE CHARACTER FLOATS ON GROUND CORRECTLY, AND HAS THE PERFECT DIMENSIONS
-			THIS IS PROBABLY DUE TO FACT THAT OLD CHARACTER WAS USED ON BOX OBJECT, AND DIMENSIONS
-			ARE CORRECTLY MADE!!!!
-			*/
-			player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
-
-
-
 	function enemy(item, speed, x, y, width, height, dirx, diry, gravity,
 		accelerationX, accelerationY, friction, image){
 	 		 var blue = item;
@@ -1578,7 +1517,7 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
 		enemy('enemy', 5, 400, 60, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
-
+/* 	TO MAKE THE DOOR WORK, YOU CAN USE THE RESETBALL FUNCTION   */
 		function doorItem(item, speed, x, y, width, height, dirx, diry, gravity, accelerationX, accelerationY, friction, image){
 		 		 var blue = item;
 
@@ -1677,6 +1616,114 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 		 			}
 
 		 doorItem('door', 5, 1100, -65, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+
+
+		  	function player(item, speed, x, y, width, height, dirx, diry, gravity,
+		 		accelerationX, accelerationY, friction, image){
+		 		 var blue = item;
+
+		 			 localStorage.setItem("savedItem", blue);
+		 		 //	console.log(blue);
+		 				carGame[blue] = {speed: speed,
+		 										 x: x,
+		 										 y: y,
+		 										 width: width,
+		 										 height: height,
+		 										 directionX: dirx,
+		 										 directionY: diry,
+		 										 gravity: gravity,
+		 										 accelerationX: accelerationX,
+		 										 accelerationY: accelerationY,
+		 										 friction: friction,
+		 										 //Point properties
+		 										 left: function()
+		 										 {
+		 											 return this.x;
+		 										 },
+		 										 right: function()
+		 										 {
+		 											 return this.x + this.width;
+		 										 },
+		 										 top: function()
+		 										 {
+		 											 return this.y;
+		 										 },
+		 										 bottom: function()
+		 										 {
+		 											 return this.y + this.height;
+		 										 },
+		 										 //Circle Properties
+		 										 centerX: function()
+		 										 {
+		 											 return this.x + (this.width / 2);
+		 										 },
+		 										 centerY: function()
+		 										 {
+		 											 return this.y + (this.height / 2);
+		 										 },
+		 										 halfWidth: function()
+		 										 {
+		 											 return this.width / 2;
+		 										 },
+		 										 halfHeight: function()
+		 										 {
+		 											 return this.height / 2;
+		 										 }
+
+
+		 										};
+
+		 			 //	localStorage.setItem("savedItem2", blue2);
+		 		 //		console.log(blue2);
+
+		 			 //	var raptor =localStorage.getItem("savedItem2");
+		 			 //	console.log(raptor[blue]);
+
+		 				 // RESETS IMAGE TO PARTICULAR LOCATION
+		 				 if (ballHitsRightWall()) {
+		 					 blue2.x = 200;
+		 				 blue2.y = 80;
+		 				 blue2.directionX = 0;
+		 				 }
+
+		 					 //CREATE DOM ELEMENT
+		 			 var para = document.createElement("div");
+		 			 para.id = blue;
+
+		 			 var element = document.getElementById("gameAssets");
+		 			 var child = document.getElementById(blue);
+		 			 element.insertBefore(para,child);
+
+		 						 //CHANGE STYLE OF DOC ELEMENT
+		 			 var square = document.getElementById(blue);
+		 			 square.style.backgroundImage = image;
+		 			 square.sourceX =   '100px';
+		 			 square.sourceY =    0;
+
+		 		 //square.style.sourceX =   '0';
+		   				square.style.width = width+ 'px';
+		 				square.style.height = height+ 'px';
+
+		 			 	square.style.left =   x + 'px';
+		 			 	square.style.top =   y +'px';
+
+		 				square.style.backgroundPosition = '0% 0%';
+
+		 			 // x.style.x = '100px'; backgroundPosition
+		 			// square.style.backgroundSize = 'contain';
+
+		 			 	square.style.position = 'absolute';
+
+		 			}
+
+		 	/*	THIS WORKS PERFECT!!!!!
+		 			THE CHARACTER FLOATS ON GROUND CORRECTLY, AND HAS THE PERFECT DIMENSIONS
+		 			THIS IS PROBABLY DUE TO FACT THAT OLD CHARACTER WAS USED ON BOX OBJECT, AND DIMENSIONS
+		 			ARE CORRECTLY MADE!!!!
+		 			*/
+
+
+		 player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 	console.log(carGame.cat);
 
