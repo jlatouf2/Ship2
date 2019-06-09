@@ -157,14 +157,24 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	var count1 = 0;
 	var gravity1 = 0;
   var isOnGround = undefined;
+  var showSide6 = 0;
+	var hitEnemy = true;
+	var objectMovement = false;
+	var tID; //we will use this variable to clear the setInterval()
+	var stopAnimation = true;
+
+
+
 
 	function initGame() {
 
+	//	buildMap(map);
+		//buildMap(gameObjects);
 
-		// place in init code
+ 		// place in init code
 		//Sounds, REFER TO FUNCITON BELOW:
 		myMusic = new sound("../media/dk2.mp3");
-		myMusic.play();
+	//	myMusic.play();
 
 		carGame.world = createWorld();
 
@@ -172,46 +182,47 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 
 	 	handleGameState();
 
-		carGame.cat.directionX = 0;
+if (objectMovement === true) {
+	//drops player and enemy down.
+	carGame.cat.directionX = 0;
+	carGame.enemy.directionX = 0;
 
-		carGame.enemy.directionX = 0;
+}
 
 		moveEnemyRight();
 
-  //	setTimeout( checkxvalue , 9000);
+	  //	setTimeout( checkxvalue , 9000);
 
-	//	createBox(600, 250);
+		//	createBox(600, 250);
 
-	//	setTimeout( enemyAI , 2000);
+		//	setTimeout( enemyAI , 2000);
 
+		//	LineShape1(600, 150, 50, 50, 0);
 
-	//	LineShape1(600, 150, 50, 50, 0);
+			//NOTE THE SETTIMEOUT FUNCTION WILL ONLY WORK IF FUNCTION IS DEFINED OUTSIDE OF INIT!!!
+		// 	paddleA.timer = setInterval(gameloop, 1000/30);
+		//	setTimeout(shipApp, 1000);
 
-		//NOTE THE SETTIMEOUT FUNCTION WILL ONLY WORK IF FUNCTION IS DEFINED OUTSIDE OF INIT!!!
-	// 	paddleA.timer = setInterval(gameloop, 1000/30);
-	//	setTimeout(shipApp, 1000);
+		//	paddleB.timer = setInterval(gameloop, 1000/30);
 
-	//	paddleB.timer = setInterval(gameloop, 1000/30);
+		//	paddleC.timer = setInterval(gameloop, 1000/30);
 
-	//	paddleC.timer = setInterval(gameloop, 1000/30);
-
-	//	setTimeout(boxAppear, 2000);
+		//	setTimeout(boxAppear, 2000);
 
  		createGround(600, 550, 300, 15, 0);
 
 		//carGame.car = createCarAt(50, 210);
 
 
-	//	carGame.car = createSimplePolygonBody(350, 200);
+  	//	carGame.car = createSimplePolygonBody(350, 200);
 
- 	//	createSimplePolygonBody2(350, 200);
+ 	  //	createSimplePolygonBody2(350, 200);
 
-	 // showSide = blockRectangle(carGame.cat, carGame.box);
+		// showSide = blockRectangle(carGame.cat, carGame.box);
 
-	//console.log(showSide);
+		//console.log(showSide);
 
-
-		getText();
+ 		getText();
 
  		showDebugDraw();
 
@@ -221,11 +232,17 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 		canvasWidth = parseInt(canvas.width);
 		canvasHeight = parseInt(canvas.height);
 
+
+
+
  		// setup the gameloop
 		setInterval(updateWorld, 1/60);
 
 
-		moveCharacter();		//CONTROLS
+	//	moveCharacter();		//CONTROLS
+
+
+		megaController();
 
 	//	enemeyController();
 
@@ -334,6 +351,7 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 				 carGame.cat.y -= carGame.cat.gravity * carGame.cat.accelerationY * carGame.cat.directionY;
 				 console.log(carGame.cat.y);
 		 setTimeout(setGravityback  , 500);
+		 //	setTimeout( checkxvalue , 9000);
 
 			//
 				}
@@ -384,6 +402,237 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	});
   }
 
+
+
+	function megaController(){
+	 	$(document).keydown(function(e){
+			switch(e.keyCode) {
+				case 38: // UP
+
+	 				return false;
+					break;
+
+				case 40: //  DOWN
+
+					stopAnimate();
+				var elem = document.getElementById('mega').style.backgroundPosition =  '0% 0%';
+			//	console.log(elem);
+				carGame.mega.directionX = 0;
+
+			  stopAnimation = true;
+
+				stopAnimate();
+
+	 				return false;
+					break;
+
+				case 39: // RIGHT
+
+ 				carGame.mega.directionX = 1;
+				carGame.mega.x += carGame.mega.speed * carGame.mega.directionX;
+
+				var elem22 = document.getElementById('mega')
+				elem22.style.transform = 'scaleX(1)'; // horizontal
+
+				if (stopAnimation === true) {  animateScript(); stopAnimation = false;  	}
+
+
+				//	carGame.enemy.directionX = 1;
+				//	carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
+
+	  				return false;
+					break;
+
+				case 37: // LEFT
+
+				carGame.mega.directionX = -1;
+				carGame.mega.x += carGame.mega.speed * carGame.mega.directionX;
+
+				var elem22 = document.getElementById('mega')
+				elem22.style.transform = 'scaleX(-1)'; // horizontal
+
+				if (stopAnimation === true) {  animateScript(); stopAnimation = false;  	}
+
+				//elem22.style.backgroundPosition =   '100% 0%';
+
+				//elem.style.transform = 'scaleX (-1)'; // horizontal
+
+				//document.getElementById('mega').style.backgroundPosition =  position + '%' + ' ' + '0%';
+
+ 				//	animateScript2();
+
+
+				//	var square = document.getElementById('mega');
+	 			//	square.style.backgroundPosition = '70% 0%';
+	 				//carGame.enemy.directionX = 0;
+
+				//		characterMovements();
+				//animatePlayer();
+				//animateScript();
+
+		 			//	setTimeout( removeEnemy, 1000);
+		 				 //	setTimeout( checkxvalue , 9000);
+		 				// showSide6= undefined;
+						//1945
+ 			// console.log('enemy was destroyed!');
+
+	 				return false;
+					break;
+
+			}
+		});
+	  }
+/*
+var square = document.getElementById(blue);
+square.style.backgroundImage = image;
+square.sourceX =   '100px';
+square.sourceY =    0;
+
+//square.style.sourceX =   '0';
+	 square.style.width = width+ 'px';
+ square.style.height = height+ 'px';
+
+ square.style.left =   x + 'px';
+ square.style.top =   y +'px';
+
+//	square.style.backgroundPosition = '0% 0%';
+
+ square.style.backgroundPosition =  backgroundx + '%' + ' ' + backgroundy + '%';
+
+*/
+
+		//SPRITES MOVE SET
+	function characterMovements() {
+							//setInterval();
+		for (var i = 10; i < 100; i=i+10) {
+		//	array[i]
+	//	console.log(i);
+	//	square.style.backgroundPosition = '70% 0%';
+	//square.style.backgroundPosition = '70% 0%';
+//	var square = document.getElementById('mega');
+	//square.style.backgroundPosition =  i + '%' + ' ' + '0%';
+
+
+		setTimeout(function () { alert('hello');  }, 3000 );
+
+
+		}
+	}
+
+
+	var i = 0, howManyTimes = 110;
+	function animatePlayer() {
+//	    alert( "hi" );
+ 	    i= i + 10;
+
+	    if( i < howManyTimes ){
+				var square = document.getElementById('mega');
+				square.style.backgroundPosition =  i + '%' + ' ' + '0%';
+			//	console.log(square.style.backgroundPosition);
+	        setTimeout( animatePlayer, 80 );
+
+					if (i == 1000) {
+						i = 0;
+					//	console.log('loop 2');
+					}
+ 				}
+	}
+/*
+function anim() {
+	var    position = 0;
+	var  interval = 100;
+	tID = setInterval ( () => {
+		  document.getElementById('mega').style.backgroundPosition =  position + '%' + ' ' + '0%';
+
+		if (position < 100)
+ 	{ position = position + 10;
+	}
+ 	  else { position = 0; }
+		, interval);
+
+		};
+*/
+
+
+function stopAnimate() {
+clearInterval(tID);
+} //end of stopAnimate()
+
+
+
+
+ function animateScript() {
+	 var    position = 0;
+	 var  interval = 100;
+	 const  diff = 100;     //diff as a variable for position offset
+
+	 tID = setInterval ( () => {
+		 document.getElementById('mega').style.backgroundPosition =  position + '%' + ' ' + '0%';
+
+			if (position < 100   + diff)
+		 { position = position + 10;}
+			 else
+		 { position = 0; }
+			}
+		 , interval );
+
+}
+
+
+/*
+function animateScript() {
+	var    position = 0;
+	var  interval = 100;
+
+	tID = setInterval ( () => {
+		document.getElementById('mega').style.backgroundPosition =  position + '%' + ' ' + '0%';
+
+	 if (position < 100)
+	{ position = position + 10;}
+	  else
+	{ position = 0; }
+	 }
+	, interval );
+
+return true;
+ }
+*/
+
+
+
+ function animateScript2() {
+ 	var    position = 100;
+ 	var  interval = 0;
+	const  diff = 100;     //diff as a variable for position offset
+
+ 	tID = setInterval ( () => {
+ 	var elem = document.getElementById('mega');
+	elem.style.transform = 'scaleX (-1)'; // horizontal
+
+	elem.style.backgroundPosition =  position + '%' + ' ' + '0%';
+console.log(position);
+		//var elem = document.getElementById ( 'flipper' );
+	 // elem.style.transform = 'scaleX (-1)'; // horizontal
+
+ 	 if (position > 0 + diff)
+ 	{ position = position - 10;}
+ 	  else
+ 	{ position = 0; }
+ 	 }
+ 	, interval );
+
+  }
+
+//	f();
+
+//	for (var start = 1; start < 10; start++)
+  //  setTimeout(function () { alert('hello');  }, 3000 * start);
+
+
+
+
+
+
 	function moveEnemyRight() {
 		carGame.enemy.directionX = 1;
 		carGame.enemy.x += carGame.enemy.speed * carGame.enemy.directionX;
@@ -413,6 +662,27 @@ carGame.levels[1] = [{"type":"car","x":50,"y":310,"fuel":20},
 	        this.sound.pause();
 	    }
 	}
+
+	let sound3 = new Audio();
+//	sound3.addEventListener("canplaythrough", playSoundHandler, false);
+	//sound3.src = "sounds/music.wav";
+
+	function playSoundHandler(event) {
+		sound3.play();
+		sound3.volume = 0.5;
+		//`loop` might or might not work depending on your browser.
+		//If it does, you might hear a short pause before it restarts
+		sound3.loop = true;
+	}
+
+
+	this.update_camera_position = function() {
+
+     this.camera.x = this.player.x - this.canvas.width / 2 ;
+     this.camera.y = this.player.y - this.canvas.height / 2;
+ }
+
+
 /*
 // place in init code
 //Sounds, REFER TO FUNCITON BELOW:
@@ -816,24 +1086,137 @@ myMusic.play();
 
 	/*******************(*********** MOVEMENT **********)************************/
 
+function removeEnemy() {
+//	var x = document.getElementById("enemy");
+//	x.remove(x.selectedIndex);
+	//var image_x = document.getElementById('enemy');
+//image_x.parentNode.removeChild(image_x);
+
+$("#enemy").css('display', 'none');
+
+ showSide6 = undefined;
+
+	  hitEnemy = false;
+}
 	//USED TO MOVE SHIP AND PLAYER IN CORRECT DIRECTIONS
 	//DETERMINES IF PLAYER MOVES IN X OR Y DIR BY ITSELF
 
 //Variables used to setting movement of objects
-function movementVariables() {
+ function movementVariables() {
+
 	gravity1 = 1;
 
-	/*    var paddleA = carGame.paddleA;
-			 paddleA.x += paddleA.speed * paddleA.directionX;
-
-			 var paddleB = carGame.paddleB;
-				paddleB.x += paddleB.speed * paddleB.directionX;
-	*/
 		var paddleC = carGame.paddleC;
-		paddleC.x += paddleC.speed * paddleC.directionX;
+	//	paddleC.x += paddleC.speed * paddleC.directionX;
 
 		var missle = carGame.missle;
-		missle.x += 50 * missle.directionX;
+	//	missle.x += 50 * missle.directionX;
+
+		var box = carGame.box;
+
+		var box1 = carGame.box1;
+
+		var mega = carGame.mega;
+
+		//GRAVITY FORCES:
+		var cat = carGame.cat;
+	//	cat.accelerationY = 10;
+	//	cat.y += cat.gravity * cat.accelerationY;
+
+		//var cat = carGame.cat;
+		//	cat.x += cat.speed * cat.directionX;
+
+		var enemy = carGame.enemy;
+	//	enemy.x += enemy.speed * enemy.directionX;
+
+	//	enemy.accelerationY = 10;
+	//	enemy.y += enemy.gravity * enemy.accelerationY;
+
+		if (objectMovement === true) {
+
+			 	paddleC.x += paddleC.speed * paddleC.directionX;
+		  	missle.x += 50 * missle.directionX;
+
+		 	cat.accelerationY = 10;
+		 	cat.y += cat.gravity * cat.accelerationY;
+			cat.x += cat.speed * cat.directionX;
+
+			enemy.accelerationY = 10;
+	   	enemy.x += enemy.speed * enemy.directionX;
+	   	enemy.y += enemy.gravity * enemy.accelerationY;
+
+			mega.accelerationY = 10;
+	   	mega.x += mega.speed * mega.directionX;
+	   	mega.y += mega.gravity * mega.accelerationY;
+
+
+
+
+				$("#paddleC").css({
+					"left" : paddleC.x + paddleC.speed * paddleC.directionX,
+					"top" : paddleC.y + paddleC.speed * paddleC.directionY
+				});
+
+						/*
+				$("#paddleA").css({
+					"left" : paddleA.x + paddleA.speed * paddleA.directionX,
+					"top" : paddleA.y + paddleA.speed * paddleA.directionY
+				});
+
+				$("#paddleB").css({
+					"left" : paddleB.x + paddleB.speed * paddleB.directionX,
+					"top" : paddleB.y + paddleB.speed * paddleB.directionY
+				});
+						*/
+
+				$(".missle").css({
+					"left" : missle.x + missle.speed * missle.directionX,
+					"top" : missle.y + missle.speed * missle.directionY
+				});
+
+			/*	$("#football").css({
+					"left" : football.x + football.speed * football.directionX,
+					"top" : football.y + football.speed * football.directionY
+				});
+
+
+				$("#circle2").css({
+					"left" : circle2.x + circle2.speed * circle2.directionX,
+					"top" : circle2.y + circle2.speed * circle2.directionY
+				});
+
+				$("#circle3").css({
+					"left" : circle3.x + circle3.speed * circle3.directionX,
+					"top" : circle3.y + circle3.speed * circle3.directionY
+				});
+			*/
+				$("#cat").css({
+					"left" : cat.x + cat.speed * cat.directionX,
+					"top" : cat.y + cat.speed * cat.directionY
+				});
+
+				$("#box").css({
+					"left" : box.x + box.speed * box.directionX,
+					"top" : box.y + box.speed * box.directionY
+				});
+
+				$("#box1").css({
+					"left" : box1.x + box1.speed * box1.directionX,
+					"top" : box1.y + box1.speed * box1.directionY
+				});
+
+				$("#enemy").css({
+					"left" : enemy.x + enemy.speed * enemy.directionX,
+					"top" : enemy.y + enemy.speed * enemy.directionY
+				});
+
+				$("#mega").css({
+					"left" : mega.x + mega.speed * mega.directionX,
+					"top" : mega.y + mega.speed * mega.directionY
+				});
+
+
+		}
 
 	/*	var football = carGame.football;
 		football.x += football.speed * football.directionX;
@@ -845,27 +1228,13 @@ function movementVariables() {
 		var circle3 = carGame.circle3;
 		circle3.x += circle3.speed * circle3.directionX;
 */
-		var box = carGame.box;
 
-		var box1 = carGame.box1;
+	/*    var paddleA = carGame.paddleA;
+			 paddleA.x += paddleA.speed * paddleA.directionX;
 
-		//GRAVITY FORCES:
-		var cat = carGame.cat;
-		cat.accelerationY = 10;
-		cat.y += cat.gravity * cat.accelerationY;
-
-
-
-		var cat = carGame.cat;
-			cat.x += cat.speed * cat.directionX;
-
-
-			var enemy = carGame.enemy;
-			enemy.x += enemy.speed * enemy.directionX;
-
-
-  					enemy.accelerationY = 10;
-					enemy.y += enemy.gravity * enemy.accelerationY;
+			 var paddleB = carGame.paddleB;
+				paddleB.x += paddleB.speed * paddleB.directionX;
+	*/
 
 	//	cat.x *= .3;
 	//		cat.x += cat.speed * cat.directionX;
@@ -877,63 +1246,7 @@ function movementVariables() {
 			enemy.x += enemy.speed * enemy.directionX;
 	*/
 
-	$("#paddleC").css({
-		"left" : paddleC.x + paddleC.speed * paddleC.directionX,
-		"top" : paddleC.y + paddleC.speed * paddleC.directionY
-	});
 
-			/*
-	$("#paddleA").css({
-		"left" : paddleA.x + paddleA.speed * paddleA.directionX,
-		"top" : paddleA.y + paddleA.speed * paddleA.directionY
-	});
-
-	$("#paddleB").css({
-		"left" : paddleB.x + paddleB.speed * paddleB.directionX,
-		"top" : paddleB.y + paddleB.speed * paddleB.directionY
-	});
-			*/
-
-	$(".missle").css({
-		"left" : missle.x + missle.speed * missle.directionX,
-		"top" : missle.y + missle.speed * missle.directionY
-	});
-
-/*	$("#football").css({
-		"left" : football.x + football.speed * football.directionX,
-		"top" : football.y + football.speed * football.directionY
-	});
-
-
-	$("#circle2").css({
-		"left" : circle2.x + circle2.speed * circle2.directionX,
-		"top" : circle2.y + circle2.speed * circle2.directionY
-	});
-
-	$("#circle3").css({
-		"left" : circle3.x + circle3.speed * circle3.directionX,
-		"top" : circle3.y + circle3.speed * circle3.directionY
-	});
-*/
-	$("#cat").css({
-		"left" : cat.x + cat.speed * cat.directionX,
-		"top" : cat.y + cat.speed * cat.directionY
-	});
-
-	$("#box").css({
-		"left" : box.x + box.speed * box.directionX,
-		"top" : box.y + box.speed * box.directionY
-	});
-
-	$("#box1").css({
-		"left" : box1.x + box1.speed * box1.directionX,
-		"top" : box1.y + box1.speed * box1.directionY
-	});
-
-	$("#enemy").css({
-		"left" : enemy.x + enemy.speed * enemy.directionX,
-		"top" : enemy.y + enemy.speed * enemy.directionY
-	});
 
 
 /*			$("#enemy").css({
@@ -951,6 +1264,9 @@ function movementVariables() {
 
 //Collision variables
 function collisionVariables() {
+
+	if (objectMovement === true) {
+
 	// check right
 	if (ballHitsRightWall()) {
 		resetBall();
@@ -977,6 +1293,9 @@ if ( carGame.cat.x + carGame.cat.speed * carGame.cat.directionX > 1000 ) {
 
 	document.getElementById("textStuff").innerHTML = "";
 	document.getElementById("textStuff").innerHTML = "You win!";
+
+	var x = document.getElementById("enemy");
+	x.remove(x.selectedIndex);
 
  //alert('You have won');
 }
@@ -1020,6 +1339,7 @@ if ( carGame.cat.x + carGame.cat.speed * carGame.cat.directionX > 1000 ) {
 		// console.log("No Collision!");
 	}
 
+//HANDLES ENEMY COLLISIONS
 	if(hitTestRectangle(carGame.enemy, carGame.cat))
 	{
 		 //	console.log("Box Collision!");
@@ -1029,12 +1349,18 @@ if ( carGame.cat.x + carGame.cat.speed * carGame.cat.directionX > 1000 ) {
 
 		 if (showSide6 === 'left' || showSide6 ==='right') {
 			 console.log('player was hit');
+
+
 		 } else if (showSide6 === 'bottom') {
+			 var square = document.getElementById('enemy');
+				square.style.backgroundPosition = '100% 0%';
+				carGame.enemy.directionX = 0;
+				setTimeout( removeEnemy, 1000);
+				 //	setTimeout( checkxvalue , 9000);
+				 showSide6= undefined;
+
 			 console.log('enemy was destroyed!');
 		 }
-	}
-	else {
-		// console.log("No Collision!");
 	}
 
 	showSide = blockRectangle(carGame.cat, carGame.box1);
@@ -1049,7 +1375,19 @@ if ( carGame.cat.x + carGame.cat.speed * carGame.cat.directionX > 1000 ) {
 
 	showSide5 = blockRectangle(carGame.cat, carGame.box4);
 
+	showSide6 = blockRectangle(carGame.mega, carGame.box4);	//collision between mega and box4
+
+	showSide7 = blockRectangle(carGame.mega, carGame.box3);	//collision between mega and box3
+
+	showSide7 = blockRectangle(carGame.mega, carGame.box2);	//collision between mega and box3
+
+	showSide7 = blockRectangle(carGame.mega, carGame.box1);	//collision between mega and box3
+
+if (hitEnemy === true) {
 	showSide6 = blockRectangle(carGame.cat, carGame.enemy);
+
+}
+
 
 	//showSide5 = blockRectangle(carGame.enemy, carGame.box3);
 
@@ -1090,6 +1428,7 @@ if(showSide !== "bottom" && carGame.cat.speed  > 0)
 		isOnGround = false;
 		//console.log(isOnGround);
 	}
+}
 
 }
 
@@ -1102,9 +1441,31 @@ if(showSide !== "bottom" && carGame.cat.speed  > 0)
 
 		collisionVariables();
 
+
 //console.log(gravity1);
   }
 
+
+	/*
+	The JavaScript prototype property also allows you to add new methods to objects constructors:
+
+	Example
+	function Person(first, last, age, eyecolor) {
+	  this.firstName = first;
+	  this.lastName = last;
+	  this.age = age;
+	  this.eyeColor = eyecolor;
+	}
+
+	Person.prototype.name = function() {
+	  return this.firstName + " " + this.lastName;
+	};
+	Person.prototype.name = function() {
+	  return this.firstName + " " + this.lastName;
+	};
+
+	removeEnemy.prototype.nationality = "English";
+	 */
 	/*******************(************** ITEM FCNS *****)**************************/
 
 	//Useless because for each item, the style needs to change,
@@ -1208,9 +1569,9 @@ function getText() {
 
 	//gameItem('cat', 5, 200, 140, 100, 95, 1, 1, "url('../images/cat.png')");
 
-	gameItem('box', 5, 150, 150, 100, 80, 1, 1, "url('../images/box.png')");
+	//gameItem('box', 5, 150, 150, 100, 80, 1, 1, "url('../images/box.png')");
 
-	gameItem('box1', 5, 250, 350, 480, 110, 1, 1, "url('../images/box.png')");
+	//gameItem('box1', 5, 250, 350, 480, 110, 1, 1, "url('../images/box.png')");
 
 
 	function tileSheetItem(item, speed, x, y, width, height, dirx, diry, sourceX, sourceY, image){
@@ -1408,13 +1769,13 @@ function getText() {
 
 //	moveItem('cat', 5, 200, 140, 100, 95, 1, 1, 0.3, 0, 0, 0.96, "url('../images/cat.png')");
 
-backgroundItems('box2', 5, 200, 540, 800, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+//backgroundItems('box2', 5, 200, 540, 800, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
 
-backgroundItems('box3', 5, 400, 140, 500, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+//backgroundItems('box3', 5, 400, 140, 500, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
 
-backgroundItems('box4', 5, 800, 0, 400, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+//backgroundItems('box4', 5, 800, 0, 400, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
 
-backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../images/grass.png')");
+//backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../images/grass.png')");
 
 
 	function enemy(item, speed, x, y, width, height, dirx, diry, gravity,
@@ -1515,10 +1876,11 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
 	 			}
 
-		enemy('enemy', 5, 400, 60, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+	//	enemy('enemy', 5, 400, 60, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 /* 	TO MAKE THE DOOR WORK, YOU CAN USE THE RESETBALL FUNCTION   */
-		function doorItem(item, speed, x, y, width, height, dirx, diry, gravity, accelerationX, accelerationY, friction, image){
+		function doorItem(item, speed, x, y, width, height, dirx, diry, gravity,
+			accelerationX, accelerationY, friction,  image){
 		 		 var blue = item;
 
 		 			 localStorage.setItem("savedItem", blue);
@@ -1615,11 +1977,11 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
 		 			}
 
-		 doorItem('door', 5, 1100, -65, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+	//	 doorItem('door', 5, 1100, -65, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 
 		  	function player(item, speed, x, y, width, height, dirx, diry, gravity,
-		 		accelerationX, accelerationY, friction, image){
+		 		accelerationX, accelerationY, friction, backgroundx, backgroundy, image){
 		 		 var blue = item;
 
 		 			 localStorage.setItem("savedItem", blue);
@@ -1635,6 +1997,9 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 		 										 accelerationX: accelerationX,
 		 										 accelerationY: accelerationY,
 		 										 friction: friction,
+												 backgroundx: backgroundx,
+												 backgroundy: backgroundy,
+
 		 										 //Point properties
 		 										 left: function()
 		 										 {
@@ -1707,7 +2072,9 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 		 			 	square.style.left =   x + 'px';
 		 			 	square.style.top =   y +'px';
 
-		 				square.style.backgroundPosition = '0% 0%';
+		 			//	square.style.backgroundPosition = '0% 0%';
+
+						square.style.backgroundPosition =  backgroundx + '%' + ' ' + backgroundy + '%';
 
 		 			 // x.style.x = '100px'; backgroundPosition
 		 			// square.style.backgroundSize = 'contain';
@@ -1723,7 +2090,7 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 		 			*/
 
 
-		 player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+	//	 player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
 
 	console.log(carGame.cat);
 
@@ -1792,8 +2159,6 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 		$("#score-a").text(pingpong.scoreA);
 		*/
 
-
-
 	}
 
 
@@ -1807,6 +2172,20 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
  		// destroy existing bodies.
  		removeAllBodies();
+
+
+
+				leveloneObjects();
+
+				objectMovement = true;
+
+ 					//drops player down.
+					carGame.cat.directionX = 0;
+					//carGame.enemy.directionX = 0;
+
+
+
+
 
  		// create a ground in our newly created world
  		// load the ground info from level data
@@ -1835,6 +2214,41 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
  	}
 
+	function leveloneObjects() {
+
+		gameItem('box', 5, 150, 150, 100, 80, 1, 1, "url('../images/box.png')");
+
+		gameItem('box1', 5, 250, 400, 480, 110, 1, 1, "url('../images/box.png')");
+
+
+		backgroundItems('box2', 5, 200, 640, 800, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+
+		backgroundItems('box3', 5, 400, 140, 500, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+
+
+		backgroundItems('box4', 5, 800, 0, 400, 80, 1, 1, 0.3, 0, 0, 0.96, "url('../images/box.png')");
+
+		backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../images/grass.png')");
+
+		enemy('enemy', 5, 400, 60, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+
+		doorItem('door', 5, 1100, -65, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+
+	//	player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, "url('../images/hedgehogApocalypse.png')");
+
+		player('cat', 5, 250, 150, 64, 64, 1, 1, 0.3, 0, 0, 0.96, 0, 0, "url('../images/hedgehogApocalypse.png')");
+
+		player('mega', 5, 250, 150, 164, 144, 1, 1, 0.3, 0, 0, 0.96, 0, 0, "url('../images/MSheet3.png')");
+
+		//animateScript( );
+
+		carGame.mega.directionX = 0;
+
+	}
+
+//	function player(item, speed, x, y, width, height, dirx, diry, gravity,
+//	accelerationX, accelerationY, friction, backgroundx, backgroundy, image){
+
 
 	function removeAllBodies() {
 		// loop all body list to destroy them
@@ -1849,6 +2263,8 @@ backgroundItems('grass', 5, 0, 700, 1300, 100, 1, 1, 0.3, 0, 0, 0.96, "url('../i
 
 
 /*********************(****** 2D BOX FCNS ********)**************************/
+
+
 
 	function showDebugDraw() {
 		shouldDrawDebug = true;

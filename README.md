@@ -1,3 +1,172 @@
+//The game map
+var assetsToLoad = [];
+var assetsLoaded = 0;
+
+var sprites = [];
+
+//Load the tilesheet image
+var image = new Image();
+image.addEventListener("load", loadHandler, false);
+image.src = "../images/hedgehogApocalypse.png";
+assetsToLoad.push(image);
+
+var map =
+[
+	[7,7,8,9,7,7,7,8,9,7,7,7,8,9,7,7],
+	[8,9,7,7,4,9,7,7,7,8,9,7,7,7,8,5],
+	[4,7,7,7,7,7,8,9,7,7,7,8,9,7,4,4],
+	[7,7,4,7,7,4,4,4,4,7,7,7,7,7,7,7],
+	[8,9,4,7,7,7,7,8,9,7,7,4,8,9,7,7],
+	[7,4,4,4,7,8,9,7,7,7,4,4,7,7,4,8],
+	[9,7,8,9,7,7,7,8,9,4,7,4,9,7,7,7],
+	[7,7,7,7,7,4,4,7,7,7,7,4,4,4,4,7],
+	[8,9,7,7,7,7,7,7,7,8,9,7,7,8,9,7],
+	[7,7,4,4,4,4,7,7,4,7,7,7,7,7,7,7],
+	[7,7,7,7,7,7,7,7,7,4,7,7,7,7,7,7],
+	[6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]
+]
+
+//The game objects map
+
+var gameObjects =
+[
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0]
+];
+
+
+//Map code
+var EMPTY = 0;
+var CAT = 1;
+var HEDGEHOG = 2;
+var BOX = 4;
+var DOOR = 5;
+
+//The size of each tile cell
+var SIZE = 64;
+
+//Sprites we need to access by name
+var cat = null;
+var door = null;
+var gameOverDisplay = null;
+var gameOverMessage = null;
+
+
+//The number of rows and columns
+var ROWS = map.length;
+var COLUMNS = map[0].length;
+
+//The number of columns on the tilesheet
+var tilesheetColumns = 3;
+
+function loadHandler()
+{
+  assetsLoaded++;
+  if(assetsLoaded === assetsToLoad.length)
+  {
+    //Remove the load handlers
+    image.removeEventListener("load", loadHandler, false);
+
+    //Build the map
+    gameState = BUILD_MAP;
+  }
+}
+
+function buildMap(levelMap)
+{
+  for(var row = 0; row < ROWS; row++)
+  {
+    for(var column = 0; column < COLUMNS; column++)
+    {
+      var currentTile = levelMap[row][column];
+
+      if(currentTile !== EMPTY)
+      {
+        //Find the tile's x and y position on the tile sheet
+        var tilesheetX = Math.floor((currentTile - 1) % tilesheetColumns) * SIZE;
+        var tilesheetY = Math.floor((currentTile - 1) / tilesheetColumns) * SIZE;
+
+        switch (currentTile)
+        {
+          case CAT:
+            cat = Object.create(spriteObject);
+            cat.sourceX = tilesheetX;
+            cat.sourceY = tilesheetY;
+            cat.x = column * SIZE;
+            cat.y = row * SIZE;
+            sprites.push(cat);
+            break;
+
+          case HEDGEHOG:
+            var hedgehog = Object.create(hedgehogObject);
+            hedgehog.sourceX = tilesheetX;
+            hedgehog.sourceY = tilesheetY;
+            hedgehog.x = column * SIZE;
+            hedgehog.y = row * SIZE;
+            hedgehog.vx = hedgehog.speed;
+            sprites.push(hedgehog);
+            hedgehogs.push(hedgehog);
+            break;
+
+          case BOX:
+            var box = Object.create(spriteObject);
+            box.sourceX = tilesheetX;
+            box.sourceY = tilesheetY;
+            box.x = column * SIZE;
+            box.y = row * SIZE;
+            sprites.push(box);
+            boxes.push(box);
+            break;
+
+          case DOOR:
+            door = Object.create(spriteObject);
+            door.sourceX = tilesheetX;
+            door.sourceY = tilesheetY;
+            door.x = column * SIZE;
+            door.y = row * SIZE;
+            sprites.push(door);
+            break;
+
+          default:
+            var sprite = Object.create(spriteObject);
+            sprite.sourceX = tilesheetX;
+            sprite.sourceY = tilesheetY;
+            sprite.x = column * SIZE;
+            sprite.y = row * SIZE;
+            sprites.push(sprite);
+        }
+      }
+    }
+  }
+}
+
+
+
+
+first store the actual function in a variable..
+
+var oldFunction = someFunction;
+then define your own:
+
+someFunction = function(){
+  // do something before
+  oldFunction();
+  // do something after
+};
+
+
+
+
 1) create level
 2) add more enemies
 3) add pause screen

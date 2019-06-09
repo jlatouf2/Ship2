@@ -23,7 +23,6 @@
 
 }
 */
-
 #game {
   width:1300px;
 }
@@ -46,6 +45,10 @@ font-family: 'Play', arial, serif;
 
 }
 
+#mega {
+/*  transform: scaleX(-1); */
+
+}
 
 
 #circle2 {
