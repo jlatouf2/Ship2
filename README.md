@@ -1,3 +1,150 @@
+
+TO MAKE START SIGN:
+1) Create start and save in animation pdf, then make sign blink by animating
+between blank and start sign.
+
+/*
+	var UP = 38;
+	var DOWN = 40;
+	var RIGHT = 39;
+	var LEFT = 37;
+
+	//Directions
+	var moveUp = false;
+	var moveDown = false;
+	var moveRight = false;
+	var moveLeft = false;
+
+	//Add keyboard listeners
+	window.addEventListener("keydown", function(event)
+	{
+	  switch(event.keyCode)
+	  {
+	    case UP:
+		    moveUp = true;
+		    break;
+
+		  case DOWN:
+		    moveDown = true;
+		    break;
+
+		  case LEFT:
+		    moveLeft = true;
+		    break;
+
+		  case RIGHT:
+		    moveRight = true;
+		    break;
+	  }
+	}, false);
+
+	window.addEventListener("keyup", function(event)
+	{
+	  switch(event.keyCode)
+	  {
+	    case UP:
+		    moveUp = false;
+		    break;
+
+		  case DOWN:
+		    moveDown = false;
+		    break;
+
+		  case LEFT:
+		    moveLeft = false;
+		    break;
+
+		  case RIGHT:
+		    moveRight = false;
+		    break;
+	  }
+	}, false);
+*/
+
+To change levels:
+1) Can delete the level one objects, and make level two objects appear.
+2) Change the screen width to make level change
+
+if (objectMovement === true) {
+
+carGame.camera.x = Math.floor(carGame.mega.x + (carGame.mega.width / 2) - (canvasWidth / 2));
+carGame.camera.y = Math.floor(carGame.mega.y + (carGame.mega.height / 2) - (canvasHeight / 2));
+
+console.log(carGame.camera.x);
+console.log(carGame.camera.y);
+
+//Keep the camera inside the gameWorld boundaries
+if(carGame.camera.x < carGame.gameWorld.x)
+{
+	carGame.camera.x = carGame.gameWorld.x;
+}
+if(carGame.camera.y < carGame.gameWorld.y)
+{
+	carGame.camera.y = carGame.gameWorld.y;
+}
+if(carGame.camera.x + carGame.camera.width > carGame.gameWorld.x + carGame.gameWorld.width)
+{
+	carGame.camera.x = carGame.gameWorld.x + carGame.gameWorld.width - carGame.camera.width;
+}
+if(carGame.camera.y + carGame.camera.height > carGame.gameWorld.height)
+{
+	carGame.camera.y = carGame.gameWorld.height - carGame.camera.height;
+}
+
+}
+
+
+//Create the gameWorld and camera objects
+var gameWorld =
+{
+  x: 0,
+  y: 0,
+  width: foreground.width,
+  height: foreground.height
+};
+//The camera has 2 new properties: "vx" and "previousX"
+var camera = {
+  x: 0,
+  y: 0,
+  width: canvas.width,
+  height: canvas.height,
+  vx: 0,
+  previousX: 0,
+  //The camera's inner scroll boundaries
+  rightInnerBoundary: function()
+  {
+    return this.x + (this.width * 0.75);
+  },
+  leftInnerBoundary: function()
+  {
+    return this.x + (this.width * 0.25);
+  }
+};
+
+
+//Scroll the camera
+  if(cat.x < camera.leftInnerBoundary())
+  {
+    camera.x = Math.floor(cat.x - (camera.width * 0.25));
+  }
+  if(cat.x + cat.width > camera.rightInnerBoundary())
+  {
+    camera.x = Math.floor(cat.x + cat.width - (camera.width * 0.75));
+  }
+  //The camera's world boundaries
+  if(camera.x < gameWorld.x)
+  {
+    camera.x = gameWorld.x;
+  }
+  if(camera.x + camera.width > gameWorld.x + gameWorld.width)
+  {
+    camera.x = gameWorld.x + gameWorld.width - camera.width;
+  }
+
+//Center the camera over the gameWorld
+camera.x = (gameWorld.x + gameWorld.width / 2) - camera.width / 2;
+camera.y = (gameWorld.y + gameWorld.height / 2) - camera.height / 2;
+
 //The game map
 var assetsToLoad = [];
 var assetsLoaded = 0;
@@ -9,6 +156,7 @@ var image = new Image();
 image.addEventListener("load", loadHandler, false);
 image.src = "../images/hedgehogApocalypse.png";
 assetsToLoad.push(image);
+
 
 var map =
 [

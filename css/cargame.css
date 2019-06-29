@@ -24,7 +24,7 @@
 }
 */
 #game {
-  width:1300px;
+  width:4000px;
 }
 
 html, body{
@@ -33,12 +33,12 @@ html, body{
 font-family: 'Play', arial, serif;
 }
 
- }
+
 
 
 #boaderTop {
     background: url(../images/boarder.png);
-   width: 2000px;
+   width: 2500px;
     top: 0px;
    position: absolute;
     height: 70px;
@@ -105,6 +105,18 @@ background-size: contain;
 
   background-image: url(../images/ship.png);
 }
+
+#ship {
+/*  margin-top: 60px;   */
+
+  left: 40px;
+   width:50px;
+  height:50px;
+  transform: rotate(90deg);
+
+ }
+
+
 
 
 #paddleB {
@@ -185,6 +197,62 @@ background-size: contain;
   background-size: contain;
    position: absolute;
    }
+
+   #textStuff2 {
+  /*  margin-top: 60px;   */
+
+  left: 10px;
+  top: 10px;
+
+   font-size:20px;
+
+  height:80px;
+
+    position: fixed;
+   }
+
+   #textStuff3 {
+  /*  margin-top: 60px;   */
+
+  left: 1000px;
+  top: 30px;
+
+   font-size:20px;
+
+  height:80px;
+
+    position: fixed;
+   }
+
+   #textStuff4 {
+  /*  margin-top: 60px;   */
+
+  left: 1000px;
+  top: 10px;
+
+   font-size:20px;
+
+  height:80px;
+
+    position: fixed;
+   }
+
+
+   #startScreen {
+  /*  margin-top: 60px;   */
+
+  left: 600px;
+  top: 200px;
+
+   font-size:50px;
+
+  height:80px;
+
+    position: fixed;
+   }
+
+
+
 
   #box {
   /*  margin-top: 60px;   */
@@ -299,6 +367,20 @@ top:200px;
      }
 
 
+     #blackman {
+
+      left: 130px;
+       width:80px;
+      height:80px;
+      transform: rotate(90deg);
+
+      background-size: contain;
+       position: absolute;
+
+      }
+
+
+
 
 .startscreen {
   background: #eee url(../images/starting_screen.jpg);
@@ -321,6 +403,10 @@ top:200px;
 }
 
 .gamebg-level4 {
+  background: #eee url(../images/bg5.jpg);
+}
+
+.gamebg-level10 {
   background: #eee url(../images/bg5.jpg);
 }
 

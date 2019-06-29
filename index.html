@@ -5,6 +5,7 @@
 	<meta charset=utf-8>
 	<title>Box2D Car Game</title>
 	<link rel="stylesheet" href="css/cargame.css" />
+	<link rel="stylesheet" href="css/optionsheet.css" />
 
 
 </head>
@@ -15,6 +16,7 @@
 		<h1>Box2DJS Car Game</h1>
 	</header>
 
+
 	<section id="game-container">
 			<div id="gameAssets">
 				<canvas id="game" width='1300' height='600' class=" startscreen"></canvas>
@@ -22,39 +24,62 @@
 				<div id="fuel" class="progressbar">
 					<div class="fuel-value" style="width: 100%;"></div>
 				</div>
-				<div id="textStuff"></div>
+				<div id="textStuff" style="color:white" ></div>
 
-		<!--		<div id="paddleA" class="paddle"></div>  -->
+				<div id="textStuff2" style="color:white" ></div>
+				<div id="textStuff3" style="color:white" ></div>
+				<div id="textStuff4" style="color:white" ></div>
 
-				<div id="boaderTop" ></div>
+				<div id="startScreen" style="color:white" ></div>
 
-		<!--		<div id="paddleB" class="paddle"></div>  -->
-
-				<!--	<div id="paddleC" class="paddle"></div>-->
-
-		<!--		<div id="enemy"   ></div> -->
-
-		<!--		<div id="missle"   ></div> -->
+				<div id="options"  ></div>
 
 
-	 		<!--	<div id="paddleA" class="paddle"></div> -->
+				<div id="optionsMenu">
+					<div id="stageSelection"> </div>
+					<div id="stageSelectionNumber"> </div>
+					<div id="brightness"> </div>
+					<div id="brightnessNumber"> </div>
+					<div id="soundLevel"> </div>
+					<div id="soundLevelNumber"> </div>
 
-				<div id="boaderTop" ></div>
-
-				<!--		<div id="monster" ></div>   -->
-
-			<!--	 	<div id="paddleB" class="paddle"></div> -->
+				</div>
 
 
-				<!-- 	<div id="enemy"   ></div>  -->
+				<!--		<div id="paddleA" class="paddle"></div>  -->
 
-	 	<div id="football"  class="paddle" ></div>
+						<div id="boaderTop" ></div>
+
+				<!--		<div id="paddleB" class="paddle"></div>  -->
+
+						<!--	<div id="paddleC" class="paddle"></div>-->
+
+				<!--		<div id="enemy"   ></div> -->
+
+				<!--		<div id="missle"   ></div> -->
+
+
+			 		<!--	<div id="paddleA" class="paddle"></div> -->
+
+						<div id="boaderTop" ></div>
+
+						<!--		<div id="monster" ></div>   -->
+
+					<!--	 	<div id="paddleB" class="paddle"></div> -->
+
+
+						<!-- 	<div id="enemy"   ></div>  -->
+
+			 	<div id="football"  class="paddle" ></div>
 
 			</div>
 
 		<div id="level"></div>
 
 	</section>
+
+	<div id="itemList"  >PLEASE CLICK HERE!</div>
+
 
 <!--
 	<canvas id="game" width='2000' height='600' class="startscreen">
@@ -80,6 +105,11 @@
 
 	<script src='js/box2dweb-2.1.a.3.min.js'></script>
 	<script src='js/jquery-2.1.3.min.js'></script>
-	<script src='js/box2dcargame.js'></script>
+	<script  type="text/javascript" src='js/movement.js'></script>
+
+   	<script src='js/box2dcargame.js'></script>
+
+		<script src='js/file2.js'></script>
+
 </body>
 </html>

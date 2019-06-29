@@ -1,0 +1,100 @@
+#options {
+/*  margin-top: 60px;   */
+
+left: 600px;
+top: 550px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+#stageSelection {
+/*  margin-top: 60px;   */
+
+left: 600px;
+top: 150px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+
+#stageSelectionNumber {
+/*  margin-top: 60px;   */
+
+left: 800px;
+top: 150px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+
+#brightness {
+/*  margin-top: 60px;   */
+
+left: 600px;
+top: 350px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+#brightnessNumber {
+/*  margin-top: 60px;   */
+
+left: 800px;
+top: 350px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+
+#soundLevel {
+/*  margin-top: 60px;   */
+
+left: 600px;
+top: 550px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
+
+#soundLevelNumber {
+/*  margin-top: 60px;   */
+
+left: 800px;
+top: 550px;
+
+font-size:20px;
+
+height:80px;
+
+background-size: contain;
+position: absolute;
+}
