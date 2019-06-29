@@ -39,6 +39,7 @@ var shoot = false;
 var missleCount = 0;
 var countEnemy = 0;
 var saveditemCount;
+var fruits = [];
 
 //Arrow key codes
 var UP = 38;
@@ -1879,11 +1880,11 @@ function fireMissleStuff() {
 
 		if (objectMovement === true) {
 
-
+/*
 			//THIS WORKS!!! IT ALLOWS YOU TO SET MOVEMENT OF STUFF WHEN YOU ADD TO ENEMY FUNCTION!!!!
 			var raptor =localStorage.getItem(saveditemCount);
 
-			//		console.log(raptor);
+	// 	console.log(raptor);
 
 		var raptorStuff = carGame[raptor];
 		//console.log(raptorStuff);
@@ -1900,8 +1901,34 @@ function fireMissleStuff() {
 		"left" : raptorStuff.x + raptorStuff.speed * raptorStuff.directionX,
 		"top" : raptorStuff.y + raptorStuff.speed * raptorStuff.directionY
 	});
+*/
+//	console.log(fruits[0]);
 
 
+
+	//THIS WORKS!!! IT ALLOWS YOU TO SET MOVEMENT OF STUFF WHEN YOU ADD TO ENEMY FUNCTION!!!!
+for (var i = 0; i < fruits.length; i++) {
+ 	//console.log(carGame[fruits[0]]);
+	//	console.log(fruits[i]);
+
+
+		var raptorStuff = carGame[fruits[i]];
+		//console.log(raptorStuff);
+
+		raptorStuff.directionX = -1;		//moves ship left
+			raptorStuff.x += 5 * raptorStuff.directionX ;
+			//raptorStuff.x += 1 * raptorStuff.directionX ;
+
+		//					console.log(this.enemyShip3);
+
+		var raptorS = '#' + fruits[i];
+
+		$(raptorS).css({
+		"left" : raptorStuff.x + raptorStuff.speed * raptorStuff.directionX,
+		"top" : raptorStuff.y + raptorStuff.speed * raptorStuff.directionY
+	});
+
+}
 
 
 			//var raptor =localStorage.getItem("savedItem");
@@ -2899,13 +2926,6 @@ function player(item, speed, x, y, width, height, dirx, diry, gravity,
 		accelerationX, accelerationY, friction, backgroundx, backgroundy, image){
 		 var blue = item;
 
-		 //ALLOWS YOU TO SET VARIABLE TO MOVEMENT AUTOMATICALLY
-countEnemy++;
- saveditemCount = "savedItem" + countEnemy;
-localStorage.setItem(saveditemCount, blue);
-	var raptor =localStorage.getItem(saveditemCount);
-//	console.log(carGame[blue]);
-//	console.log(carGame[raptor]);
 
 
 			 localStorage.setItem("savedItem", blue);
@@ -3005,87 +3025,100 @@ localStorage.setItem(saveditemCount, blue);
  		//	var black = carGame.;
 			console.log(carGame[blue].x);
 
-		//	movementVariables.prototype..accel = 5;
-		console.log(blue);
+			//	movementVariables.prototype..accel = 5;
+			console.log(blue);
 
-		var black333 = carGame[blue];
-		console.log(black333);
-	 	//window.requestAnimationFrame(render2);
+			var black333 = carGame[blue];
+			console.log(black333);
+		 	//window.requestAnimationFrame(render2);
 
-		movementVariables.prototype.moveStuff = function(blue) {
-				this.white = "Jarred";
-				 this.teal22 = "#" + blue;
-				 console.log(this.teal22);
-			$(this.teal22).css({
-				"left" : carGame[blue].x + carGame[blue].speed * carGame[blue].directionX,
-				"top" : carGame[blue].y + carGame[blue].speed * carGame[blue].directionY
-			});
-
-			carGame[blue].directionX = -1;		//moves ship left
-				carGame[blue].x += 500 * carGame[blue].directionX ;
-			carGame[blue].accelerationY = 5;
-			console.log('Accel ' + carGame[blue].accelerationY);
-			console.log('X value ' + carGame[blue].x);
-	 };
+		 	console.log(carGame[blue]);
 
 
-	 collisionVariables.prototype.enemyMoves = function(blue, black333) {
-			 this.white = "Jarred";
-				this.teal22 = "#" + blue;
-				this.works = black333;
-				console.log(carGame[blue]);
-
-				//enemyship3 movement
-		 			 this.playerMoves = carGame[blue];
-
-		 			 carGame[blue].directionX = -1;		//moves ship left
-		 				 carGame[blue].x += 5 * carGame[blue].directionX ;
-		 				 carGame[blue].x += 1 * carGame[blue].directionX ;
-
- 		 				 //CHANGE STYLE OF DOC ELEMENT
-		 	 var square = document.getElementById(blue);
-			 console.log(square);
-		 		 square.style.left =   carGame[blue].x + carGame[blue].speed * carGame[blue].directionX + 'px';
-		 		 square.style.top =   carGame[blue].y + carGame[blue].speed * carGame[blue].directionY +'px';
-				 console.log(square);
-
- 	};
-
-	console.log(carGame[blue]);
 
 
-   movementVariables.prototype.price = 100;
-		 var myFather = new movementVariables();
-	  var myFather2 = new collisionVariables(blue);
+			//ALLOWS YOU TO SET VARIABLE TO MOVEMENT AUTOMATICALLY
+ 			countEnemy++;
+ 			 saveditemCount = "savedItem" + countEnemy;
+ 			localStorage.setItem(saveditemCount, blue);
+ 				var raptor =localStorage.getItem(saveditemCount);
+ 				console.log(carGame[blue]);
+ 		 	console.log(carGame[raptor]);
 
-		//	document.getElementById("demo").innerHTML = "My father is " + myFather.moveStuff();
-		myFather.moveStuff(blue)
-	 	myFather2.enemyMoves(blue)
-
-   movementVariables.prototype.moveStuff = 100;
-
-	 console.log(myFather.price);
-	 console.log(myFather);
-
-	 console.log(myFather2);
-	 console.log(myFather2.enemyMoves);
-
-
-	 console.log(myFather2.playerMoves);
-
-	 //var newtoy = new Gadget('webcam', 'black');
-
-	 movementVariables.prototype.getInfo = function () {
-	      return 'Rating: '  + ', price: ';
-	 };
-
-	   for (var prop in myFather2) {
-	     console.log(prop + ' = ' + myFather[prop]);
-	}
+		//	var fruits = [];
+			fruits.push(blue);
+console.log(fruits);
 
 //console.log(movementVariables.prototype.moveStuff);
 
 /*
+
+movementVariables.prototype.moveStuff = function(blue) {
+		this.white = "Jarred";
+		 this.teal22 = "#" + blue;
+		 console.log(this.teal22);
+	$(this.teal22).css({
+		"left" : carGame[blue].x + carGame[blue].speed * carGame[blue].directionX,
+		"top" : carGame[blue].y + carGame[blue].speed * carGame[blue].directionY
+	});
+
+	carGame[blue].directionX = -1;		//moves ship left
+		carGame[blue].x += 500 * carGame[blue].directionX ;
+	carGame[blue].accelerationY = 5;
+	console.log('Accel ' + carGame[blue].accelerationY);
+	console.log('X value ' + carGame[blue].x);
+};
+
+
+collisionVariables.prototype.enemyMoves = function(blue, black333) {
+	 this.white = "Jarred";
+		this.teal22 = "#" + blue;
+		this.works = black333;
+		console.log(carGame[blue]);
+
+		//enemyship3 movement
+			 this.playerMoves = carGame[blue];
+
+			 carGame[blue].directionX = -1;		//moves ship left
+				 carGame[blue].x += 5 * carGame[blue].directionX ;
+				 carGame[blue].x += 1 * carGame[blue].directionX ;
+
+				 //CHANGE STYLE OF DOC ELEMENT
+	 var square = document.getElementById(blue);
+	 console.log(square);
+		 square.style.left =   carGame[blue].x + carGame[blue].speed * carGame[blue].directionX + 'px';
+		 square.style.top =   carGame[blue].y + carGame[blue].speed * carGame[blue].directionY +'px';
+		 console.log(square);
+
+};
+
+movementVariables.prototype.price = 100;
+	var myFather = new movementVariables();
+ var myFather2 = new collisionVariables(blue);
+
+ //	document.getElementById("demo").innerHTML = "My father is " + myFather.moveStuff();
+ myFather.moveStuff(blue)
+ myFather2.enemyMoves(blue)
+
+movementVariables.prototype.moveStuff = 100;
+
+
+//var newtoy = new Gadget('webcam', 'black');
+
+movementVariables.prototype.getInfo = function () {
+		 return 'Rating: '  + ', price: ';
+};
+
+	for (var prop in myFather2) {
+		console.log(prop + ' = ' + myFather[prop]);
+}
+
+console.log(myFather.price);
+console.log(myFather);
+console.log(myFather2);
+console.log(myFather2.enemyMoves);
+console.log(myFather2.playerMoves);
+
 console.log(myFather.hasOwnProperty('white'));
 
 			collisionVariables.prototype.variables = function(blue) {
@@ -3126,6 +3159,7 @@ console.log(myFather.hasOwnProperty('white'));
 			}
 
 
+			console.log(fruits);
 
 /*********************(******** RESET FCNS ********)***************************/
 
@@ -3140,15 +3174,11 @@ console.log(myFather.hasOwnProperty('white'));
 
 
  	function resetBall() {
-
     carGame.missle.x = carGame.ship.x;
 		carGame.missle.y = carGame.ship.y + 70;
 
-
  		carGame.paddleC.directionX = 0;
 		carGame.missle.directionX = 0;
-
-
 
 	}
 
@@ -3248,7 +3278,13 @@ console.log(myFather.hasOwnProperty('white'));
 
 		enemy2('enemyShip3', 1, 750, 350, 50, 50, 1, 1, 0.3, 0, 0, 0.96, 30, 0, "url('../images/enemyship.png')");
 
+		enemy2('enemyShip4', 1, 150, 150, 50, 50, 1, 1, 0.3, 0, 0, 0.96, 30, 0, "url('../images/enemyship.png')");
+
+		enemy2('enemyShip5', 1, 650, 150, 50, 50, 1, 1, 0.3, 0, 0, 0.96, 30, 0, "url('../images/enemyship.png')");
+
 		console.log('COUNT: ' + countEnemy);
+
+		console.log(fruits);
 
 
 	  //  player('missle22', 1, 250, 150, 92, 81, 1, 1, 0.3, 0, 0, 0.96, 0, 0, "url('../images/Missle.png')");
